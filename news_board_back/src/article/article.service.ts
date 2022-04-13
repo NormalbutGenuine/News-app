@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import * as fs from "fs";
+import { getNews } from '../utils/crwal.utils';
 
 @Injectable()
 export class ArticleService {
-    getEconomyNews() {
-        const data = fs.readFileSync("./news.json", {encoding: "utf-8"})
-        return data
+    async getEconomyNews() {
+       return await getNews() 
     }
 }

@@ -1,27 +1,12 @@
-import React, {useState} from "react"
-import Head from "../Header"
-import {Row, Col, Tab, Nav, Card, Button} from "react-bootstrap"
+import React, {useState} from "react";
+import { Tab, Nav, Row, Col } from "react-bootstrap";
+import ScrapList from "./ScrapCard";
 
 let array = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 
-const ScrapList : React.FC = () => {
-    return (
-        <Card style={{ width: '90%', margin: "10px" }}>
-        <Card.Body>
-            <Card.Title>Scrap Title</Card.Title>
-            <Card.Text>
-                스크랩 내용 예시 입니다.
-            </Card.Text>
-            <Button variant="primary">보기</Button>
-        </Card.Body>
-        </Card>
-    )
-}
-
 let counter : number = 0
 
-const MyPage : React.FC = () => {
-
+const TabView : React.FC = () => {
     const [view, setView] = useState(false)
 
     function OneCounter() {
@@ -44,12 +29,10 @@ const MyPage : React.FC = () => {
             return <ScrapList />
         })}
         </Tab.Pane>
-        
     }
 
     return (
         <div>
-            <Head />
             <h1 style={{fontWeight: "bold", textAlign: "center", marginTop: "3%"}}>MY PAGE</h1>
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                 <Row style={{marginTop: "50px"}}>
@@ -72,6 +55,7 @@ const MyPage : React.FC = () => {
             </Tab.Container>
         </div>
     )
+    
 }
 
-export default MyPage
+export default TabView

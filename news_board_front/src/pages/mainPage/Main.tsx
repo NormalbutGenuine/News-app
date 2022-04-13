@@ -1,20 +1,16 @@
 import React, { useState, useEffect, useCallback, useRef } from "react"
 import {Card, Button, Modal, Carousel} from "react-bootstrap";
-import { useInView } from "react-intersection-observer"
 import TopBar from "./Top_Nav";
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "axios"
-
-interface Iinfo {
-    first: string;
-    second: string;
-    third: string;
-}
+import axios from "axios";
+import { Iinfo } from "../../types/InfoType";
 
 const Main : React.FC = () => {
     const src : string = `https://source.unsplash.com/random/1000x650`
     let content_text : string = "Some quick example text to build on the card title and make up the bulk ofthe card's content. I'm free to be whatever I, Whatever I choose and I'll sing the blues if I want."
     const [show, setShow] = useState(false)
+    const [title, setTitle] = useState(false)
+    let box :Iinfo[] = []
 
     // state
     const [infoArray, setInfoArray] = useState<Iinfo[]>([]);
@@ -35,9 +31,9 @@ const Main : React.FC = () => {
 
     // function
     const getInfo = async () => {
-        const res = await axios.get('http://localhost:3050/go'); // 서버에서 데이터 가져오기
+        const res = await axios.get('http://localhost:3030/article'); // 서버에서 데이터 가져오기
         setInfoArray((curInfoArray) => [...curInfoArray, ...res.data]); // state에 추가
-
+        box.push(res.data);
         console.log('info data add...');
     }
 
@@ -51,39 +47,44 @@ const Main : React.FC = () => {
         })
     }
 
-    if (content_text.length > 139) content_text = content_text.substring(0, 139) + "..."
+    function cutText(txt:string) :string {
+        if (txt.length > 139) txt = txt.substring(0, 139) + "..."
+        return txt
+    }
 
     function CardList(){
+        console.log(box[0])
+        
         return (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <Card style={{ width: '21rem', height: "27.5rem", left: "175px", top: "95px" , padding: "5px", margin: "30px"}}>
-                    <Card.Img variant="top" src={src} />
+                <Card style={{ width: '21rem', height: "31rem", left: "175px", top: "95px" , padding: "5px", margin: "30px"}}>
+                    <Card.Img variant="top" src={box[0].img} style={{objectFit: "cover"}}/>
                     <Card.Body>
-                        <Card.Title>Card Title</Card.Title>
+                        <Card.Title>{cutText(box[0].headLine)}</Card.Title>
                         <Card.Text>
-                            {content_text}
+                            {box[0].content}
                         </Card.Text>
-                        <Button style={{width: "100%" /**상대 너비로 해야 카드 크기가 작아질 때 버튼도 같이 작아진다. */, textAlign: "center", color: "whitesmoke"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
+                        <Button style={{width: "100%" /**상대 너비로 해야 카드 크기가 작아질 때 버튼도 같이 작아진다. */, textAlign: "center", color: "whitesmoke", padding: "3px", margin: "5px"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
                     </Card.Body>
                 </Card>
-                <Card style={{ width: '21rem', height: "27.5rem", left: "175px", top: "95px" , padding: "5px", margin: "30px"}}>
-                    <Card.Img variant="top" src={src} />
+                <Card style={{ width: '21rem', height: "31rem", left: "175px", top: "95px" , padding: "5px", margin: "30px"}}>
+                    <Card.Img variant="top" src={box[1].img} style={{objectFit: "cover"}}/>
                     <Card.Body>
-                        <Card.Title>Card Title</Card.Title>
+                        <Card.Title>{box[1].headLine}</Card.Title>
                         <Card.Text>
-                            {content_text}
+                            {cutText(box[1].content)}
                         </Card.Text>
-                        <Button style={{width: "100%", textAlign: "center", color: "whitesmoke"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
+                        <Button style={{width: "100%", textAlign: "center", color: "whitesmoke", padding: "3px", position: "static", top: "20px"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
                     </Card.Body>
                 </Card>
-                <Card style={{ width: '21rem', height: "27.5rem", left: "175px", top: "95px", padding: "5px", margin: "30px"}}>
-                    <Card.Img variant="top" src={src} />
+                <Card style={{ width: '21rem', height: "31rem", left: "175px", top: "95px", padding: "5px", margin: "30px"}}>
+                    <Card.Img variant="top" src={box[2].img} style={{objectFit: "cover"}}/>
                     <Card.Body>
-                        <Card.Title>Card Title</Card.Title>
+                        <Card.Title>{box[2].headLine}</Card.Title>
                         <Card.Text>
-                            {content_text}
+                            {cutText(box[2].content)}
                         </Card.Text>
-                        <Button style={{width: "100%", textAlign: "center", color: "whitesmoke", objectFit: "contain"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
+                        <Button style={{width: "100%", textAlign: "center", color: "whitesmoke", objectFit: "contain", padding: "3px", position: "static", margin: "5px"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
                     </Card.Body>
                 </Card>
             </div>
@@ -117,7 +118,7 @@ const Main : React.FC = () => {
                 </Modal.Body>
             </Modal>
             {infoArray.map((info, index) => {
-                console.log(info)
+                box.push(info)
                     if(infoArray.length-3 === index) {
                         // 관찰되는 요소가 있는 html, 아래에서 5번째에 해당하는 박스를 관찰
                         return (

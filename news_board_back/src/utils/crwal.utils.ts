@@ -1,10 +1,11 @@
-import iconv from "iconv-lite"
+import * as iconv from "iconv-lite"
 import cheerio from "cheerio"
 import axios from "axios"
+import { News_Category } from "./category.utils"
 
-export async function getHtml() {
+export async function getHtml(category : string) {
     try{
-        const htmlData = await axios.get("https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=101", {
+        const htmlData = await axios.get(category, {
         responseType: "arraybuffer"
     })
         return htmlData
@@ -15,7 +16,7 @@ export async function getHtml() {
 
 export async function getNews() : Promise<object> {
     let newsBox = []
-    const res = await getHtml()
+    const res = await getHtml(News_Category.POLITICS)
     const content = iconv.decode(res.data, "EUC-KR").toString() // iconv 객체가 undefined 되는 오류
     const $ = cheerio.load(content)
     const list = $("ul li")

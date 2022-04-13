@@ -1,30 +1,5 @@
-import React, {useState} from "react"
-import {ButtonGroup, ToggleButton, Nav } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-
-const TopBar : React.FC = () => {
-    return(
-        <div>
-            <ProfileAndLogin />
-            <Category />
-        </div>
-    )
-}
-
-const ProfileAndLogin : React.FC = () => {
-    return (
-        <Nav style={{float: "right"}} >
-            <Nav.Item>
-                <Nav.Link href="mypage" id="Mypage" eventKey="mypage" style={{fontWeight: "bolder"}}>마이페이지</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-                <Nav.Link href="/login" eventKey="link" style={{fontWeight: "bolder"}}>
-                    로그인
-                </Nav.Link>
-            </Nav.Item>
-        </Nav>
-    )
-}
+import React, {useState} from "react";
+import { ButtonGroup, ToggleButton } from "react-bootstrap";
 
 const Category : React.FC = () => {
     const [checked, setChecked] = useState(false);
@@ -61,4 +36,4 @@ const Category : React.FC = () => {
     );
 }
 
-export default TopBar
+export default Category

@@ -1,7 +1,7 @@
 import React from "react"
 import {Nav} from "react-bootstrap"
 
-const Head: React.FC = () => {
+const LayoutHeader: React.FC = () => {
     return (
         <Nav.Item style={{width: "fit-content"}}>
             <Nav.Link href="/" style={{fontSize: "17.5px"}}>Home</Nav.Link>
@@ -9,4 +9,4 @@ const Head: React.FC = () => {
     )
 }
 
-export default Head
+export default LayoutHeader

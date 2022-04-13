@@ -1,11 +1,9 @@
-import React from "react"
-import Head from "../Header"
-import {InputGroup, FormControl, Button, Form} from "react-bootstrap"
+import React from "react";
+import { InputGroup, Button, Form } from "react-bootstrap";
 
-const Register : React.FC = () => {
-    return(
+const RegistrationComponent : React.FC = () => {
+    return (
         <div>
-        <Head />
             <h2 style={{textAlign: "center"}}>회원가입양식</h2>
             <div style={{display: "flex", flexDirection: 'column'}}>
                 <InputGroup className="mb-3" style={{width: "32%", margin: "0 auto", display: "flex", alignItems: "center", marginTop: "5.5%"}}>
@@ -43,4 +41,5 @@ const Register : React.FC = () => {
     )
 }
 
-export default Register
+
+export default RegistrationComponent
