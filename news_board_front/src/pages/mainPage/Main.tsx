@@ -4,10 +4,14 @@ import TopBar from "./Top_Nav";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Iinfo } from "../../types/InfoType";
+import {CategoryNumber} from "../../request/apiCall"
+
+let categoryNumber = new CategoryNumber()
+
+console.log(window.location.pathname)
 
 const Main : React.FC = () => {
-    const src : string = `https://source.unsplash.com/random/1000x650`
-    let content_text : string = "Some quick example text to build on the card title and make up the bulk ofthe card's content. I'm free to be whatever I, Whatever I choose and I'll sing the blues if I want."
+    
     const [show, setShow] = useState(false)
     const [title, setTitle] = useState(false)
     let box :Iinfo[] = []
@@ -21,7 +25,7 @@ const Main : React.FC = () => {
 
     // useEffect
     useEffect(() => {
-        getInfo();
+        getInfo(window.location.pathname);
     }, [])
 
     useEffect(() => {
@@ -30,8 +34,31 @@ const Main : React.FC = () => {
     }, [infoArray])
 
     // function
-    const getInfo = async () => {
-        const res = await axios.get('http://localhost:3030/article'); // 서버에서 데이터 가져오기
+    const getInfo = async (category : string) => {
+        if (category === "/") category = "1"
+        switch (category) {
+            case "/2":
+                category = "2"
+                break;
+            
+            case "/3":
+                category = "3"
+                break;
+            
+            case "/4":
+                category = "4"
+                break;
+            
+            case "/5":
+                category = "5"
+                break;
+
+            default:
+                category = "1"
+                break;
+        }
+        // 경제 버튼 클릭 시 서버에 경제뉴스 데이터 호출
+        const res = await axios.get(`http://localhost:3030/article/${category}`); // 서버에서 데이터 가져오기
         setInfoArray((curInfoArray) => [...curInfoArray, ...res.data]); // state에 추가
         box.push(res.data);
         console.log('info data add...');
@@ -42,7 +69,7 @@ const Main : React.FC = () => {
         entries.forEach((entry) => {
             if(entry.isIntersecting) { // 관찰하고 있는 entry가 화면에 보여지는 경우
                 io.unobserve(entry.target); // entry 관찰 해제
-                getInfo(); // 데이터 가져오기
+                getInfo(window.location.pathname); // 데이터 가져오기
             }
         })
     }
@@ -51,40 +78,19 @@ const Main : React.FC = () => {
         if (txt.length > 139) txt = txt.substring(0, 139) + "..."
         return txt
     }
-
-    function CardList(){
-        console.log(box[0])
-        
+    // @ts-ignore
+    function CardList(num){
+        console.log(num.num)
         return (
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <Card style={{ width: '21rem', height: "31rem", left: "175px", top: "95px" , padding: "5px", margin: "30px"}}>
-                    <Card.Img variant="top" src={box[0].img} style={{objectFit: "cover"}}/>
+            <div style={{ display: 'flex', flexDirection: 'row', flexWrap: "wrap" }}>
+                <Card style={{ width: '21rem', height: "31rem", left: "175px", top: "95px" , padding: "5px", margin: "30px", position: "relative"}}>
+                    <Card.Img variant="top" src={box[num.num].img} style={{objectFit: "fill"}}/>
                     <Card.Body>
-                        <Card.Title>{cutText(box[0].headLine)}</Card.Title>
+                        <Card.Title>{cutText(box[num.num].headLine)}</Card.Title>
                         <Card.Text>
-                            {box[0].content}
+                            {box[num.num].content}
                         </Card.Text>
-                        <Button style={{width: "100%" /**상대 너비로 해야 카드 크기가 작아질 때 버튼도 같이 작아진다. */, textAlign: "center", color: "whitesmoke", padding: "3px", margin: "5px"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
-                    </Card.Body>
-                </Card>
-                <Card style={{ width: '21rem', height: "31rem", left: "175px", top: "95px" , padding: "5px", margin: "30px"}}>
-                    <Card.Img variant="top" src={box[1].img} style={{objectFit: "cover"}}/>
-                    <Card.Body>
-                        <Card.Title>{box[1].headLine}</Card.Title>
-                        <Card.Text>
-                            {cutText(box[1].content)}
-                        </Card.Text>
-                        <Button style={{width: "100%", textAlign: "center", color: "whitesmoke", padding: "3px", position: "static", top: "20px"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
-                    </Card.Body>
-                </Card>
-                <Card style={{ width: '21rem', height: "31rem", left: "175px", top: "95px", padding: "5px", margin: "30px"}}>
-                    <Card.Img variant="top" src={box[2].img} style={{objectFit: "cover"}}/>
-                    <Card.Body>
-                        <Card.Title>{box[2].headLine}</Card.Title>
-                        <Card.Text>
-                            {cutText(box[2].content)}
-                        </Card.Text>
-                        <Button style={{width: "100%", textAlign: "center", color: "whitesmoke", objectFit: "contain", padding: "3px", position: "static", margin: "5px"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
+                        <Button style={{width: "95%", textAlign: "center", color: "whitesmoke", padding: "3px", margin: "5px", position: "absolute", left: "2px", top: "438px"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
                     </Card.Body>
                 </Card>
             </div>
@@ -119,23 +125,28 @@ const Main : React.FC = () => {
             </Modal>
             {infoArray.map((info, index) => {
                 box.push(info)
-                    if(infoArray.length-3 === index) {
+                console.log(infoArray.length)
+                    if(infoArray.length-5 === index && index < infoArray.length - 2 && index%3 === 0) {
                         // 관찰되는 요소가 있는 html, 아래에서 5번째에 해당하는 박스를 관찰
                         return (
-                            <div ref={boxRef} key={index}>
-                                <CardList />
+                            <div ref={boxRef} key={index} style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap"}}>
+                                <CardList num={index}/>
+                                <CardList num={index + 1}/>
+                                <CardList num={index + 2}/>
                             </div>
                         )
-                    } else {
+                    } else if (infoArray.length - 2 > index && index%3 === 0){
                         // 관찰되는 요소가 없는 html
                         return (
-                            <div key={index}>
-                                <CardList />
+                            <div key = {index} style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap"}}>
+                                <CardList num={index}/>
+                                <CardList num={index + 1}/>
+                                <CardList num={index + 2}/>
                             </div>
                         )
                     }
-                })}
-
+                }) 
+            }
         </div>
     )
 }

@@ -8,10 +8,14 @@ import { Routes, Route } from 'react-router-dom';
 const App: React.FC = () =>  {
   return (
     <Routes>
-      <Route path="/" element={<Main/>} />
-      <Route path="/login" element={<Login />} />
-      <Route path='/mypage' element={<MyPage />} />
-      <Route path='/register' element={<Register />} />
+      <Route path="/" element = {<Main/>} />
+      <Route path='/2' element = {<Main />} />
+      <Route path='/3' element = {<Main />} />
+      <Route path='/4' element = {<Main />} />
+      <Route path='/5' element = {<Main />} />
+      <Route path="/login" element = {<Login />} />
+      <Route path='/mypage' element = {<MyPage />} />
+      <Route path='/register' element = {<Register />} />
     </Routes>
   );
 }

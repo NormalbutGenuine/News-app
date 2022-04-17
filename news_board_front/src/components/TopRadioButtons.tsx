@@ -1,5 +1,8 @@
-import React, {useState} from "react";
-import { ButtonGroup, ToggleButton } from "react-bootstrap";
+import React,{useState} from "react";
+import { ButtonGroup, ToggleButton} from "react-bootstrap";
+import { CategoryNumber } from "../request/apiCall";
+
+let categoryNumber = new CategoryNumber()
 
 const Category : React.FC = () => {
     const [checked, setChecked] = useState(false);
@@ -15,7 +18,7 @@ const Category : React.FC = () => {
   
     return (
       <>
-        <ButtonGroup style={{left: "576px", top: "50px", }}>
+        <ButtonGroup style={{left: "576px", top: "50px", zIndex: "2"}}>
           {radios.map((radio, idx) => (
             <ToggleButton
               style={{margin: "8px", borderRadius: "2px", fontFamily: "sans-serif"}}
@@ -25,8 +28,9 @@ const Category : React.FC = () => {
               variant='outline-success'
               name="radio"
               value={radio.value}
-              checked={radioValue === radio.value}
+              checked={Number(radio.value) === 1 ? true : Number(radio.value) === Number(window.location.pathname.substring(1,2))}
               onChange={(e) => setRadioValue(e.currentTarget.value)}
+              onClick={() => categoryNumber.setCategoryNum(radio.value)}
             >
               {radio.name}
             </ToggleButton>
