@@ -6,13 +6,13 @@ import { NewsRepository } from './article.repository';
 @Injectable()
 export class ArticleService {
 
-    constructor (
-        @InjectRepository(NewsRepository)
+    constructor(
         private newsRepository: NewsRepository,
-    ) {}
+    ) { }
 
-    async getCrawledNews(section) {
-       return await getNews(section) 
+    async getCrawledNews(section: ENews_Category) {
+        const getNewsRes = await getNews(section)
+        this.newsRepository.createNews(getNewsRes[0])
     }
 
     async getCrawledSportsNews() {
