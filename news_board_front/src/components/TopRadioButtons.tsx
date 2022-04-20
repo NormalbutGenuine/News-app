@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import { ButtonGroup, ToggleButton} from "react-bootstrap";
-import { CategoryNumber } from "../request/apiCall";
+import { CategoryNumber } from "../request/CategoryChange";
 
 let categoryNumber = new CategoryNumber()
 

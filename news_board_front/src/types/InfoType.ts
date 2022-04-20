@@ -1,5 +1,9 @@
 export interface Iinfo {
-    headLine: string;
-    content: string;
-    img: string;
+    title: string
+    category: string
+    lede: string
+    imgSrc: string
+    newsURL: string
+    body: string
+    date: Date
 }

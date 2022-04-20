@@ -4,11 +4,6 @@ import TopBar from "./Top_Nav";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Iinfo } from "../../types/InfoType";
-import {CategoryNumber} from "../../request/apiCall"
-
-let categoryNumber = new CategoryNumber()
-
-console.log(window.location.pathname)
 
 const Main : React.FC = () => {
     
@@ -38,23 +33,23 @@ const Main : React.FC = () => {
         if (category === "/") category = "1"
         switch (category) {
             case "/2":
-                category = "2"
+                category = "economy"
                 break;
             
             case "/3":
-                category = "3"
+                category = "society"
                 break;
             
             case "/4":
-                category = "4"
+                category = "science"
                 break;
             
             case "/5":
-                category = "5"
+                category = "sports"
                 break;
 
             default:
-                category = "1"
+                category = "politics"
                 break;
         }
         // 경제 버튼 클릭 시 서버에 경제뉴스 데이터 호출
@@ -84,11 +79,11 @@ const Main : React.FC = () => {
         return (
             <div style={{ display: 'flex', flexDirection: 'row', flexWrap: "wrap" }}>
                 <Card style={{ width: '21rem', height: "31rem", left: "175px", top: "95px" , padding: "5px", margin: "30px", position: "relative"}}>
-                    <Card.Img variant="top" src={box[num.num].img} style={{objectFit: "fill"}}/>
+                    <Card.Img variant="top" src={box[num.num].imgSrc} style={{objectFit: "fill"}}/>
                     <Card.Body>
-                        <Card.Title>{cutText(box[num.num].headLine)}</Card.Title>
+                        <Card.Title>{cutText(box[num.num].title)}</Card.Title>
                         <Card.Text>
-                            {box[num.num].content}
+                            {box[num.num].lede}
                         </Card.Text>
                         <Button style={{width: "95%", textAlign: "center", color: "whitesmoke", padding: "3px", margin: "5px", position: "absolute", left: "2px", top: "438px"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
                     </Card.Body>
@@ -109,16 +104,13 @@ const Main : React.FC = () => {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="example-custom-modal-styling-title">
-                        Custom Modal Styling
+                        How do I Say
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{height: "500px"}}>
                     <Carousel style={{display: "block", width:"100%", height:"100%", background: "black", opacity: "70%"}}>
                         <Carousel.Item style={{ color: "white", display: "block", fontSize: "23px", padding: "90px"}}>
-                        신 변호사는 6일 자신의 페이스북에 '조국 교수 일가의 수난을 바라보며'라는 내용의 글을 올렸다. 
-                        그는 "조 교수의 경우 본인은 말할 것도 없고, 부인은 지금 영어의 몸이 되었으며, 
-                        금쪽같은 딸이 의전원 입학취소의 날벼락을 맞았다"고 했다. 그러면서 "지금 조 교수는 살아도 살지 않은 것이요, 
-                        한 인간이 겪을 수 있는 가장 큰 고통의 불 한가운데서 몸 전체가 타고 있는 셈"이라며 연민을 드러냈다.
+                            hahaha
                         </Carousel.Item>
                     </Carousel>
                 </Modal.Body>

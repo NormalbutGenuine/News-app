@@ -1,33 +1,33 @@
 import { Controller, Get } from '@nestjs/common';
 import { ArticleService } from './article.service';
-import { News_Category } from 'src/config/category.config';
+import { News_Category } from 'src/configs/category.config';
 
 @Controller('article')
 export class ArticleController {
 
     constructor(private readonly articleService: ArticleService) {}
 
-    @Get("/1")
+    @Get("/politics")
     getPolitics(){
         return this.articleService.getCrawledNews(News_Category.POLITICS)
     }
 
-    @Get("/2")
+    @Get("/economy")
     getEconomy(){
         return this.articleService.getCrawledNews(News_Category.ECONOMY)
     }
 
-    @Get("/3")
+    @Get("/society")
     getSociety() {
         return this.articleService.getCrawledNews(News_Category.SOCIETY)
     }
 
-    @Get("/4")
+    @Get("/science")
     getScience() {
         return this.articleService.getCrawledNews(News_Category.SCIENCE)
     }
 
-    @Get("/5")
+    @Get("/sports")
     getSports() {
         return this.articleService.getCrawledSportsNews()
     }
