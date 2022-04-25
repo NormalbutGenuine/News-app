@@ -5,14 +5,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Iinfo } from "../../types/InfoType";
 
+let word : string = "Saved!";
+
 const Main : React.FC = () => {
-    
+   
     const [show, setShow] = useState(false)
-    const [title, setTitle] = useState(false)
+    const [change, setChange] = useState(false)
     let box :Iinfo[] = []
 
     // state
     const [infoArray, setInfoArray] = useState<Iinfo[]>([]);
+    const [body, setBody] = useState<string []>([]);
 
     // ref
     const observerRef = useRef<IntersectionObserver>();
@@ -57,6 +60,7 @@ const Main : React.FC = () => {
         setInfoArray((curInfoArray) => [...curInfoArray, ...res.data]); // state에 추가
         box.push(res.data);
         console.log('info data add...');
+        return box
     }
 
     // IntersectionObserver 설정
@@ -85,9 +89,74 @@ const Main : React.FC = () => {
                         <Card.Text>
                             {box[num.num].lede}
                         </Card.Text>
-                        <Button style={{width: "95%", textAlign: "center", color: "whitesmoke", padding: "3px", margin: "5px", position: "absolute", left: "2px", top: "438px"}} variant="info" onClick={() => setShow(true)}>기사 보기</Button>
+                        <Button style={{width: "95%", textAlign: "center", color: "whitesmoke", padding: "3px", margin: "5px", position: "absolute", left: "2px", top: "438px"}} variant="info" onClick={() => GetBody(num.num)}>기사 보기</Button>
                     </Card.Body>
                 </Card>
+            </div>
+        )
+    }
+
+    function GetBody(idx: number) {
+        let sum : string = "";
+        let txt : string[] = [];
+        let content = infoArray[idx].body.split(/다./) 
+        for (let i = 0; i < content.length; i++){
+            if (sum.length < 170)  {
+                sum = sum + content[i] + '다.'
+            }else {
+                txt.push(sum)
+                sum = ""
+            }
+        }
+        setBody((body) => [...txt])
+        setShow((show) => !show)
+        console.log(body)
+        return body
+    }
+    
+    // Modal은 사실 처음에 렌더링이 이미 되어있다. getBody를 누를 때 처음으로 렌더링이 되게 한다면?
+    // @ts-ignore
+    const CardModal : React.FC = () => {
+        const [index, setIndex] = useState(0);
+        const [visible, setVisible] = useState(false);
+        const handleSelect = (selectedIndex : any, e : any) => {
+          setIndex(selectedIndex);
+          console.log(index)
+        };
+        return (
+            <div>
+                <Modal
+                show={show}
+                onHide={() => setShow(false)}
+                dialogClassName="modal-90w"
+                aria-labelledby="example-custom-modal-styling-title"
+                size="lg"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title id="example-custom-modal-styling-title">
+                            How do I Say
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{height: "500px"}}>
+                    
+                    <Carousel fade interval={null} activeIndex={index} onSelect={handleSelect} style={{display: "block", width:"100%", height:"100%", background: "black", opacity: "70%"}}>
+                        {/* @ts-ignore */} 
+                        {body.map((item, idx) => {
+                            return (
+                                <Carousel.Item key={idx} style={{ color: "white", display: "block", fontSize: "23px", padding: "90px", transitionProperty: "none", transform: "none"}}>
+                                    {item}
+                                </Carousel.Item>
+                            )
+                        })
+                        }
+                        </Carousel> 
+                    </Modal.Body>
+                    <Modal.Footer style={{display: "flex"}}>
+                        <p style={{visibility: visible ? "visible" : "hidden"}}>{word}</p>
+                        <Button variant="primary" onClick={() => setVisible((visible) => !visible)}>Scrap</Button>
+                    </Modal.Footer>
+                </Modal>
+                  
             </div>
         )
     }
@@ -95,30 +164,11 @@ const Main : React.FC = () => {
     return (
         <div>
             <TopBar />
-            <Modal
-            show={show}
-            onHide={() => setShow(false)}
-            dialogClassName="modal-90w"
-            aria-labelledby="example-custom-modal-styling-title"
-            size="lg"
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title id="example-custom-modal-styling-title">
-                        How do I Say
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={{height: "500px"}}>
-                    <Carousel style={{display: "block", width:"100%", height:"100%", background: "black", opacity: "70%"}}>
-                        <Carousel.Item style={{ color: "white", display: "block", fontSize: "23px", padding: "90px"}}>
-                            hahaha
-                        </Carousel.Item>
-                    </Carousel>
-                </Modal.Body>
-            </Modal>
+            {/**@ts-ignore */}
+            <CardModal />
             {infoArray.map((info, index) => {
                 box.push(info)
-                console.log(infoArray.length)
-                    if(infoArray.length-5 === index && index < infoArray.length - 2 && index%3 === 0) {
+                    if(infoArray.length-5 === index && index < infoArray.length - 2 && index % 3 === 0) {
                         // 관찰되는 요소가 있는 html, 아래에서 5번째에 해당하는 박스를 관찰
                         return (
                             <div ref={boxRef} key={index} style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap"}}>
@@ -127,7 +177,7 @@ const Main : React.FC = () => {
                                 <CardList num={index + 2}/>
                             </div>
                         )
-                    } else if (infoArray.length - 2 > index && index%3 === 0){
+                    } else if (infoArray.length - 2 > index && index % 3 === 0) {
                         // 관찰되는 요소가 없는 html
                         return (
                             <div key = {index} style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap"}}>
@@ -139,6 +189,7 @@ const Main : React.FC = () => {
                     }
                 }) 
             }
+            
         </div>
     )
 }

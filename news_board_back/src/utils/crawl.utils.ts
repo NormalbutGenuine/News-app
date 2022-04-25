@@ -1,11 +1,8 @@
 import * as iconv from "iconv-lite"
 import cheerio from "cheerio"
 import axios from "axios"
-import {News_Category} from "../configs/category.config"
+import {NewsCategory, News_Category} from "../configs/category.config"
 import {newsData} from "../article/object_Types/newsType"
-import { NewsRepository } from "../article/article.repository"
-
-const Repository = new NewsRepository()
 
 export async function getHtml(category : string) {
     try{
@@ -18,49 +15,36 @@ export async function getHtml(category : string) {
     }
 }
 
-export async function getNews(NewsSection) : Promise<object> {
+export async function getNews(NewsSection) : Promise<any[]> {
     let newsBox = []
-    const res = await getHtml(NewsSection)
-    let category = "politics";
+    try {
+        const res = await getHtml(NewsSection)
 
-    switch (NewsSection) {
-        case News_Category.ECONOMY:
-            category = "economy";
-            break;
+        let category = NewsCategory[NewsSection]
+        const content = iconv.decode(res.data, "EUC-KR").toString() // iconv 객체가 undefined 되는 오류
+        const $ = cheerio.load(content)
+        const list = $("ul li")
+
+        //@ts-ignore
+        let newsObj : newsData = {}
         
-        case News_Category.SCIENCE:
-            category = "science";
-            break;
-
-        case News_Category.SOCIETY:
-            category = "society";
-            break;
-
-        case News_Category.POLITICS:
-            category = "politics";
-            break;
+        for (let elem of list)  {
+            newsObj = {
+                title: $(elem).find("div.cluster_text a.cluster_text_headline").text(),
+                category: category,
+                lede : $(elem).find("div.cluster_text div.cluster_text_lede").text(),
+                imgSrc : $(elem).find("div.cluster_thumb img").attr("src"),
+                newsURL : $(elem).find("div.cluster_text a").attr("href"),
+                body : "null",
+                date : new Date()
+            }
+            if(newsObj.newsURL) newsObj.body = await getNewsBody(String(newsObj.newsURL))
+            if (Object.values(newsObj).filter(value => value).length === 7) newsBox.push(newsObj)  
+        }
+    }catch (e){
+        console.log("ERROR IS: "+e)
     }
 
-    const content = iconv.decode(res.data, "EUC-KR").toString() // iconv 객체가 undefined 되는 오류
-    const $ = cheerio.load(content)
-    const list = $("ul li")
-    
-    list.each((index, elem) => {
-        let newsObj : newsData = {
-            title: $(elem).find("div.cluster_text a.cluster_text_headline").text(),
-            category: category,
-            lede : $(elem).find("div.cluster_text div.cluster_text_lede").text(),
-            imgSrc : $(elem).find("div.cluster_thumb img").attr("src"),
-            newsURL : $(elem).find("div.cluster_text a").attr("href"),
-            body : "null",
-            date : new Date()
-        }
-        if (newsObj.title != '' && newsObj.imgSrc != undefined && newsObj.lede != '' && Object.values(newsObj).includes("undefined") === false) newsBox.push(newsObj)
-    })
-    console.log(Repository)
-    // newsBox.forEach( async (item, index) => {
-    //     await Repository.createNews(item)
-    // })
     return newsBox
 }
 
@@ -71,7 +55,7 @@ export async function getSportsNews() : Promise<object> {
     const $ = cheerio.load(content)
     const listSports = $("ul.today_list li")
 
-    listSports.each((index, elem) => {
+    for(let elem of listSports) {
         let newsObj : newsData = {
             title: $(elem).find("div.text_area strong.title").text(),
             category: "sports",
@@ -82,8 +66,24 @@ export async function getSportsNews() : Promise<object> {
             body : "null",
             date : new Date()
         }
-        if (newsObj.title != '' && newsObj.imgSrc != undefined && newsObj.lede != '') newsBox.push(newsObj)
-    })
+        if(newsObj.newsURL) newsObj.body = await getNewsBody(String(newsObj.newsURL))
+        if (Object.values(newsObj).filter(value => value).length === 7) newsBox.push(newsObj) 
+    }
     console.log(newsBox)
     return newsBox   
 }
+
+export async function getNewsBody(URL:string) {
+    const res = await getHtml(URL);
+    const content = iconv.decode(res.data, "utf-8").toString()
+    const $ = cheerio.load(content)
+    return $("#dic_area").text().replace(/(\r\n|\n|\r|\t)/gm, "");
+}
+// replace(/(\r\n|\n|\r|\t)/gm, "")
+getNews(News_Category.ECONOMY).then((res) => {
+    let arr = res[0].body.split(/다./)
+    console.log(arr.length)
+    // for (let item of res) {
+
+    // }
+})
