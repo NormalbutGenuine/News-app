@@ -6,7 +6,7 @@ import { NewsRepository } from './article.repository';
 export class ArticleService {
 
     constructor(
-        private newsRepository: NewsRepository,
+        private newsRepository: NewsRepository, // 프레임워크의 컨테이너 안에 이미 객체가 생성되어 있다.
     ) { }
 
     async getCrawledNews(section) {

@@ -1,34 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ArticleService } from './article.service';
-import { News_Category } from 'src/configs/category.config';
+import { CategoryURL, ENews_Category, NewsCategory, News_Category } from 'src/configs/category.config';
 
 @Controller('article')
 export class ArticleController {
 
-    constructor(private readonly articleService: ArticleService) {}
+    constructor(private readonly articleService: ArticleService) {} // 프레임워크 안에 이미 객체가 생성되어 있다.
 
-    @Get("/politics")
-    getPolitics(){
-        return this.articleService.getCrawledNews(News_Category.POLITICS)
-    }
-
-    @Get("/economy")
-    getEconomy(){
-        return this.articleService.getCrawledNews(News_Category.ECONOMY)
-    }
-
-    @Get("/society")
-    getSociety() {
-        return this.articleService.getCrawledNews(News_Category.SOCIETY)
-    }
-
-    @Get("/science")
-    getScience() {
-        return this.articleService.getCrawledNews(News_Category.SCIENCE)
-    }
-
-    @Get("/sports")
-    getSports() {
-        return this.articleService.getCrawledSportsNews()
+    @Get("/:category")
+    getArticle(
+        @Param('category') category: ENews_Category
+    ) {
+        if (String(category) === "sports") return this.articleService.getCrawledSportsNews()
+        return this.articleService.getCrawledNews(CategoryURL[category])
     }
 }
