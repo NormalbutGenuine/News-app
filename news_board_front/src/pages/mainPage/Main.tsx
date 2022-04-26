@@ -5,12 +5,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Iinfo } from "../../types/InfoType";
 
-let word : string = "Saved!";
-
 const Main : React.FC = () => {
    
     const [show, setShow] = useState(false)
-    const [change, setChange] = useState(false)
     let box :Iinfo[] = []
 
     // state
@@ -20,19 +17,18 @@ const Main : React.FC = () => {
     // ref
     const observerRef = useRef<IntersectionObserver>();
     const boxRef = useRef<HTMLDivElement>(null);
-
-    // useEffect
+    // 첫 화면 렌더링시 백엔드 데이터 콜
     useEffect(() => {
         getInfo(window.location.pathname);
     }, [])
-
+    // 무한 스크롤
     useEffect(() => {
         observerRef.current = new IntersectionObserver(intersectionObserver); // IntersectionObserver
         boxRef.current && observerRef.current.observe(boxRef.current);
     }, [infoArray])
 
-    // function
     const getInfo = async (category : string) => {
+        // enum으로 모듈화
         if (category === "/") category = "1"
         switch (category) {
             case "/2":
@@ -119,6 +115,7 @@ const Main : React.FC = () => {
     const CardModal : React.FC = () => {
         const [index, setIndex] = useState(0);
         const [visible, setVisible] = useState(false);
+        let word : string = "Saved!";
         const handleSelect = (selectedIndex : any, e : any) => {
           setIndex(selectedIndex);
           console.log(index)

@@ -18,5 +18,6 @@ export const NewsCategory = {
     [ENews_Category.ECONOMY]: "economy",
     [ENews_Category.SCIENCE]: "science",
     [ENews_Category.SOCIETY]: "society",
-    [ENews_Category.POLITICS]: "politics"
+    [ENews_Category.POLITICS]: "politics",
+    [ENews_Category.SPORTS]: "sports"
 }
