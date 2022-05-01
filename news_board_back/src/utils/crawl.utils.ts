@@ -1,7 +1,7 @@
 import * as iconv from "iconv-lite"
 import cheerio from "cheerio"
 import axios from "axios"
-import {NewsCategory, News_Category} from "../configs/category.config"
+import {ENews_Category, NewsCategory} from "../configs/category.config"
 import {newsData} from "../article/object_Types/newsType"
 
 export async function getHtml(category : string) {
@@ -49,7 +49,7 @@ export async function getNews(NewsSection) : Promise<any[]> {
 
 export async function getSportsNews() : Promise<object> {
     let newsBox = []
-    const res = await getHtml(News_Category.SPORTS)
+    const res = await getHtml(ENews_Category.SPORTS)
     const content = iconv.decode(res.data, "utf-8").toString()
     const $ = cheerio.load(content)
     const listSports = $("ul.today_list li")
@@ -65,7 +65,7 @@ export async function getSportsNews() : Promise<object> {
             body : "null",
             date : new Date()
         }
-        if(newsObj.newsURL) newsObj.body = await getNewsBody(String(newsObj.newsURL), NewsCategory[News_Category.SPORTS])
+        if(newsObj.newsURL) newsObj.body = await getNewsBody(String(newsObj.newsURL), NewsCategory[ENews_Category.SPORTS])
         console.log(newsObj)
         if (Object.values(newsObj).filter(value => value).length === 7) newsBox.push(newsObj)
        
@@ -79,7 +79,7 @@ export async function getNewsBody(URL:string, category : string = "null") {
     const $ = cheerio.load(content)
     if (category != "null") {
         console.log("Sports here")
-        return $("#newsEndContents").text().replace(/(\r\n|\n|\r|\t)/gm, "")
+        return $("#newsEndContents").text().replace(/(\r\n|\n|\r|\t)/gm, "");
     }
     else {
         return $("#dic_area").text().replace(/(\r\n|\n|\r|\t)/gm, "");

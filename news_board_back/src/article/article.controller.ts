@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ArticleService } from './article.service';
-import { CategoryURL, ENews_Category, NewsCategory, News_Category } from 'src/configs/category.config';
+import { CategoryURL, ENews_Category } from 'src/configs/category.config';
 
 @Controller('article')
 export class ArticleController {
