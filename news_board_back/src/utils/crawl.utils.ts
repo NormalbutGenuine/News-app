@@ -2,7 +2,7 @@ import * as iconv from "iconv-lite"
 import cheerio from "cheerio"
 import axios from "axios"
 import {ENews_Category, NewsCategory} from "../configs/category.config"
-import {newsData} from "../article/object_Types/newsType"
+import { newsData } from "src/article/dto/NewsData.dto"
 
 export async function getHtml(category : string) {
     try{
@@ -66,7 +66,6 @@ export async function getSportsNews() : Promise<object> {
             date : new Date()
         }
         if(newsObj.newsURL) newsObj.body = await getNewsBody(String(newsObj.newsURL), NewsCategory[ENews_Category.SPORTS])
-        console.log(newsObj)
         if (Object.values(newsObj).filter(value => value).length === 7) newsBox.push(newsObj)
        
     }

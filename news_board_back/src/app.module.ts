@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NewsCollection } from './article/article.entity';
 import { ArticleModule } from './article/article.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -12,10 +12,11 @@ import { ArticleModule } from './article/article.module';
       username: 'postgres',
       password: 'tiger',
       database: 'NewsAppDB',
-      entities: [NewsCollection],
+      entities: ["dist/**/*.entity.{js, ts}"],
       synchronize: true,
     }),
-    ArticleModule
+    ArticleModule,
+    UsersModule
   ],
 })
 export class AppModule {}

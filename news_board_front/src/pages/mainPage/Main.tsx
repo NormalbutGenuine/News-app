@@ -7,6 +7,7 @@ import { Iinfo } from "../../types/InfoType";
 
 const Main : React.FC = () => {
    
+    let [title, setTitle] = useState<string>("");
     const [show, setShow] = useState(false)
     let box :Iinfo[] = []
 
@@ -95,7 +96,8 @@ const Main : React.FC = () => {
     function GetBody(idx: number) {
         let sum : string = "";
         let txt : string[] = [];
-        let content = infoArray[idx].body.split(/다./) 
+        let content = infoArray[idx].body.split(/다./)
+        setTitle((title) => infoArray[idx].title); 
         for (let i = 0; i < content.length; i++){
             if (sum.length < 170)  {
                 sum = sum + content[i] + '다.'
@@ -106,7 +108,7 @@ const Main : React.FC = () => {
         }
         setBody((body) => [...txt])
         setShow((show) => !show)
-        console.log(body)
+        
         return body
     }
     
@@ -131,7 +133,7 @@ const Main : React.FC = () => {
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id="example-custom-modal-styling-title">
-                            How do I Say
+                            {title}                    
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body style={{height: "500px"}}>
