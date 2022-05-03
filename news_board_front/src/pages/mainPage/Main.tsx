@@ -6,7 +6,6 @@ import axios from "axios";
 import { Iinfo } from "../../types/InfoType";
 
 const Main : React.FC = () => {
-   
     let [title, setTitle] = useState<string>("");
     const [show, setShow] = useState(false)
     let box :Iinfo[] = []
@@ -122,6 +121,10 @@ const Main : React.FC = () => {
           setIndex(selectedIndex);
           console.log(index)
         };
+        async function SaveParagraph() {
+            // TODO: Scrap한 문단 저장
+            setVisible((visible) => !visible)
+        }
         return (
             <div>
                 <Modal
@@ -152,10 +155,9 @@ const Main : React.FC = () => {
                     </Modal.Body>
                     <Modal.Footer style={{display: "flex"}}>
                         <p style={{visibility: visible ? "visible" : "hidden"}}>{word}</p>
-                        <Button variant="primary" onClick={() => setVisible((visible) => !visible)}>Scrap</Button>
+                        <Button variant="primary" onClick={() => SaveParagraph()}>Scrap</Button>
                     </Modal.Footer>
                 </Modal>
-                  
             </div>
         )
     }
@@ -188,7 +190,6 @@ const Main : React.FC = () => {
                     }
                 }) 
             }
-            
         </div>
     )
 }

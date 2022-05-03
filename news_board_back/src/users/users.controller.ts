@@ -1,11 +1,13 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { AuthService } from 'src/auth/auth.service';
+import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 import { UserRequestDto } from './dtos/users.request.dto';
 import { User } from './repository/user.entity';
 import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+    constructor(private readonly usersService: UsersService, private readonly authService: AuthService) {}
 
     @Get("")
     findAll() : Promise<User[]> {
@@ -29,7 +31,7 @@ export class UsersController {
     }
 
     @Post("/login")
-    loginApi() {
-        // TODO : Login API 작업
+    logIn(@Body() data: LoginRequestDto) {
+        return this.authService.jwtLogIn(data);
     }
 }

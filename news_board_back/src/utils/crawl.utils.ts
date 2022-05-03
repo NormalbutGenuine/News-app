@@ -77,7 +77,6 @@ export async function getNewsBody(URL:string, category : string = "null") {
     const content = iconv.decode(res.data, "utf-8").toString()
     const $ = cheerio.load(content)
     if (category != "null") {
-        console.log("Sports here")
         return $("#newsEndContents").text().replace(/(\r\n|\n|\r|\t)/gm, "");
     }
     else {
