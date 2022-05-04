@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ScrapRequestDto } from './dtos/scrap.request.dto';
-import { Scraps } from './repository/scrap.entity';
 import { ScrapsRepository } from './repository/scrap.repository';
 
 @Injectable()

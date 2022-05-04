@@ -11,10 +11,11 @@ export class ScrapsRepository extends Repository<Scraps>{
         return res
     }
     async saveScrap(token : string, paragraph : string) {
-        const decoded_token : Ipayload = JSON.parse(String(jwt.decode(token)))
-        const email : string = decoded_token.email
-        const created_at : Date = new Date()
-        const updated_at : Date = new Date()
+        const decoded_token = jwt.decode(token)
+        // @ts-ignore
+        const email = decoded_token.email
+        const created_at = new Date()
+        const updated_at = new Date()
         // @ts-ignore
         return await Scraps.save<Scraps>({ email : email, paragraph: paragraph, created_at: created_at, updated_at: updated_at})
     }

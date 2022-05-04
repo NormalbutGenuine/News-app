@@ -7,7 +7,6 @@ export class ScrapsController {
     constructor(private readonly scrapsService: ScrapsService) {}
     @Post("")
     async SaveParagraph(@Body() body:ScrapRequestDto) {
-        console.log(body)
         return await this.scrapsService.createScrap(body)
     }
 
