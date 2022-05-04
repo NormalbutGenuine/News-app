@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useCallback, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import {Card, Button, Modal, Carousel} from "react-bootstrap";
 import TopBar from "./Top_Nav";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Iinfo } from "../../types/InfoType";
+import { URLToCategory } from "../../types/CategoryConfig";
+import cookies from "react-cookies";
 
 const Main : React.FC = () => {
     let [title, setTitle] = useState<string>("");
@@ -28,31 +30,7 @@ const Main : React.FC = () => {
     }, [infoArray])
 
     const getInfo = async (category : string) => {
-        // enum으로 모듈화
-        if (category === "/") category = "1"
-        switch (category) {
-            case "/2":
-                category = "economy"
-                break;
-            
-            case "/3":
-                category = "society"
-                break;
-            
-            case "/4":
-                category = "science"
-                break;
-            
-            case "/5":
-                category = "sports"
-                break;
-
-            default:
-                category = "politics"
-                break;
-        }
-        // 경제 버튼 클릭 시 서버에 경제뉴스 데이터 호출
-        const res = await axios.get(`http://localhost:3030/article/${category}`); // 서버에서 데이터 가져오기
+        const res = await axios.get(`http://localhost:3030/article/${URLToCategory(category)}`); // 서버에서 데이터 가져오기
         setInfoArray((curInfoArray) => [...curInfoArray, ...res.data]); // state에 추가
         box.push(res.data);
         console.log('info data add...');
@@ -115,15 +93,32 @@ const Main : React.FC = () => {
     // @ts-ignore
     const CardModal : React.FC = () => {
         const [index, setIndex] = useState(0);
-        const [visible, setVisible] = useState(false);
-        let word : string = "Saved!";
+        const [visible, setVisible] = useState("");
         const handleSelect = (selectedIndex : any, e : any) => {
           setIndex(selectedIndex);
           console.log(index)
         };
+        // 스크랩한 문단 서버에 전달
         async function SaveParagraph() {
-            // TODO: Scrap한 문단 저장
-            setVisible((visible) => !visible)
+            if (cookies.load("access token") != undefined) {
+                const DOM_id : string = document.getElementsByClassName("active carousel-item")[0].id
+                const paragraph : string | undefined = document.getElementById(DOM_id)?.innerText
+                try {
+                    const res = await axios.post("http://localhost:3030/scraps", {
+                        email: cookies.load("access token"),
+                        paragraph: paragraph
+                    })
+                    console.log(res)
+                    setVisible((visible) => "Saved!")
+                } catch (err) {
+                    console.log("ERROR IS: "+err)
+                    setVisible((visible) => "Not Saved")
+                }
+            } else {
+                setVisible((visible) => "로그인 하세요.")
+            }
+            
+            setTimeout(() => setVisible((visible) => ""), 1950)
         }
         return (
             <div>
@@ -141,20 +136,20 @@ const Main : React.FC = () => {
                     </Modal.Header>
                     <Modal.Body style={{height: "500px"}}>
                     
-                    <Carousel fade interval={null} activeIndex={index} onSelect={handleSelect} style={{display: "block", width:"100%", height:"100%", background: "black", opacity: "70%"}}>
-                        {/* @ts-ignore */} 
-                        {body.map((item, idx) => {
-                            return (
-                                <Carousel.Item key={idx} style={{ color: "white", display: "block", fontSize: "23px", padding: "90px", transitionProperty: "none", transform: "none"}}>
-                                    {item}
-                                </Carousel.Item>
-                            )
-                        })
-                        }
+                        <Carousel fade interval={null} activeIndex={index} onSelect={handleSelect} style={{display: "block", width:"100%", height:"100%", background: "black", opacity: "70%"}}>
+                            {/* @ts-ignore */} 
+                            {body.map((item, idx) => {
+                                return (
+                                    <Carousel.Item id={`cardText${idx}`} key={idx} style={{ color: "white", display: "block", fontSize: "23px", padding: "90px", transitionProperty: "none", transform: "none"}}>
+                                        {item}
+                                    </Carousel.Item>
+                                )
+                            })
+                            }
                         </Carousel> 
                     </Modal.Body>
                     <Modal.Footer style={{display: "flex"}}>
-                        <p style={{visibility: visible ? "visible" : "hidden"}}>{word}</p>
+                        <p>{visible}</p>
                         <Button variant="primary" onClick={() => SaveParagraph()}>Scrap</Button>
                     </Modal.Footer>
                 </Modal>

@@ -26,4 +26,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('접근 오류');
     }
   }
+
+  TokenToEmail(payload: Payload) {
+    console.log(payload)
+    const email = payload.email;
+    return email;
+  }
 }
