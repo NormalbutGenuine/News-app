@@ -6,18 +6,21 @@ import { Ipayload } from "src/configs/jwt.payload.config";
 @EntityRepository(Scraps)
 export class ScrapsRepository extends Repository<Scraps>{
 
-    async findScrapByParagraph(text : string) {
-        let res = await Scraps.findOne({paragraph: text})
+    async findScrapByParagraphAndEmail(text : string, email: string) {
+        const decoded_token = jwt.decode(email)
+        // @ts-ignore
+        const decoded_email = decoded_token.email
+        let res = await Scraps.findOne({paragraph: text, email: decoded_email})
         return res
     }
-    async saveScrap(token : string, paragraph : string) {
+    async saveScrap(token : string, paragraph : string, title: string) {
         const decoded_token = jwt.decode(token)
         // @ts-ignore
         const email = decoded_token.email
         const created_at = new Date()
         const updated_at = new Date()
         // @ts-ignore
-        return await Scraps.save<Scraps>({ email : email, paragraph: paragraph, created_at: created_at, updated_at: updated_at})
+        return await Scraps.save<Scraps>({ email : email, paragraph: paragraph, title:title, created_at: created_at, updated_at: updated_at})
     }
 
     async findAllScrapsByEmail(token) {

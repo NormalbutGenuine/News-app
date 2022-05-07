@@ -7,6 +7,11 @@ import { Iinfo } from "../../types/InfoType";
 import { URLToCategory } from "../../types/CategoryConfig";
 import cookies from "react-cookies";
 
+export function cutText(txt:string) :string {
+    if (txt.length > 139) txt = txt.substring(0, 139) + "..."
+    return txt
+}
+
 const Main : React.FC = () => {
     let [title, setTitle] = useState<string>("");
     const [show, setShow] = useState(false)
@@ -47,10 +52,6 @@ const Main : React.FC = () => {
         })
     }
 
-    function cutText(txt:string) :string {
-        if (txt.length > 139) txt = txt.substring(0, 139) + "..."
-        return txt
-    }
     // @ts-ignore
     function CardList(num){
         console.log(num.num)
@@ -103,10 +104,12 @@ const Main : React.FC = () => {
             if (cookies.load("access token") != undefined) {
                 const DOM_id : string = document.getElementsByClassName("active carousel-item")[0].id
                 const paragraph : string | undefined = document.getElementById(DOM_id)?.innerText
+                const title = document.getElementById("example-custom-modal-styling-title")?.innerText
                 try {
                     const res = await axios.post("http://localhost:3030/scraps", {
                         email: cookies.load("access token"),
-                        paragraph: paragraph
+                        paragraph: paragraph,
+                        title: title
                     })
                     console.log(res)
                     setVisible((visible) => "Saved!")

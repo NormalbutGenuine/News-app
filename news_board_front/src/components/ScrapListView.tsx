@@ -1,22 +1,70 @@
-import React, {useState} from "react";
-import { Tab, Nav, Row, Col } from "react-bootstrap";
+import React, {useState, useEffect} from "react";
+import { Tab, Nav, Row, Pagination, Col } from "react-bootstrap";
 import ScrapList from "./ScrapCard";
 
-let array = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-
-let counter : number = 0
 // @ts-ignore
 const TabView : React.FC = ({scrapList}) => {
-    const [view, setView] = useState(false)
+    let showArr : any[] = []
+    let [presentArr, setPresentArr] = useState([])
+    let [active, setActive] = useState(1)
+    useEffect(() => {
+        console.log(active)
+    }, [active])
+    function MakeShowArr() {        
+        let subArr : any[] = []
+        let preArr : any[] = []
+        scrapList.filter((value : any, idx : any) => {
+            subArr.push(value)
+            if (idx % 5 === 4) {
+                preArr.push(scrapList.slice(idx-4, idx+1))
+                subArr =  []
+            }
+            if (idx === scrapList.length - 1) {
+                preArr.push(subArr)
+            }
+        })
+        return preArr
+    }
 
     function ScrapComponent() {
-        return <Tab.Pane eventKey="first" style={{ display: 'grid', gridTemplateRows: "1fr ", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr" }}>
-        {/* @ts-ignore */}
-        {scrapList.map((item, idx) => {
-            // @ts-ignore
-            return <ScrapList text={item.paragraph} key={idx}/>
-        })}
-        </Tab.Pane>
+        showArr = MakeShowArr()
+        console.log(showArr[0])
+        
+        console.log(scrapList)
+        return (
+            <Tab.Pane eventKey="first" style={{ display: 'grid', gridTemplateRows: "1fr ", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr" }}>
+            
+            {scrapList.map((item : any, idx : any) => {
+                // @ts-ignore
+                if (active === 1 && idx < 5) return <ScrapList text={item.paragraph} title={item.title} key={idx} />
+                // active = 5 -> idx 5~9 , active = 10 -> idx 10 ~ 14
+                else if (active >= 5 && idx >= active && idx < 5 + active) {
+                    // @ts-ignore
+                    return <ScrapList text={item.paragraph} title={item.title} key={idx} />
+                }
+            })
+            }
+            </Tab.Pane>
+        )
+    }
+
+    // @ts-ignore
+    const Pagination_Component : React.FC = () => {
+        let items = []
+        let page_number = 0
+        for (let number = 1; number <= scrapList.length; number++) {
+            if (number % 5 === 0 || number === 1) {
+                page_number+=1
+                items.push(
+                    <Pagination.Item id={`page${number}`} key={number} active={number === active} onClick={() => setActive((active) => number)}>
+                        {page_number}
+                    </Pagination.Item>,
+                );
+            }
+        }
+        return (
+            <Pagination size="lg" style={{display: "flex", alignItems: "center", justifyContent: "center"}}>{items}</Pagination>
+        )
     }
 
     return (
@@ -29,19 +77,18 @@ const TabView : React.FC = ({scrapList}) => {
                         <Nav.Item>
                             <Nav.Link eventKey="first" >스크랩 목록</Nav.Link>
                         </Nav.Item>
-                       
                     </Nav>
                     </Col>
                     <Col sm={9} >
                     <Tab.Content>
-                        <ScrapComponent />   
+                        <ScrapComponent />
+                        <Pagination_Component />
                     </Tab.Content>
                     </Col>
                 </Row>
             </Tab.Container>
         </div>
     )
-    
 }
 
 export default TabView

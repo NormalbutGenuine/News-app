@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import { Card, Button, Modal, DropdownButton, Dropdown } from "react-bootstrap";
+import { Card, Modal, DropdownButton, Dropdown } from "react-bootstrap";
 import axios from "axios";
 import cookies from "react-cookies";
+import { cutText } from "../pages/mainPage/Main";
 
 // @ts-ignore
-const ScrapList : React.FC = ({text}) => {
+const ScrapList : React.FC = ({text, title}) => {
     const [show, setShow] = useState(false);
-    const [render, setRender] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     async function DeleteParagraph() {
@@ -23,26 +23,23 @@ const ScrapList : React.FC = ({text}) => {
         }
         document.location.href = "/mypage"
     }
-    return (
+    return (   
         <div>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>{text}</Modal.Body>
-                <Modal.Footer>
-                </Modal.Footer>
             </Modal>
-            <Card style={{ width: '90%', margin: "10px" }}>
+            <Card style={{ width: '200px', margin: "10px" }}>
             <Card.Body>
-                <Card.Title>Scrap Title</Card.Title>
-                <Card.Text id="ScrapBody">
+                <Card.Title style={{overflow: "hidden", height: "95px", wordBreak: "break-all"}}>{title}</Card.Title>
+                <Card.Text id="ScrapBody" style={{overflow: "hidden", wordBreak: "break-all", height: "220px"}}>
                     {text}
                 </Card.Text>
                 <DropdownButton id="dropdown-item-button" title="select">
                     <Dropdown.Item as="button" onClick={handleShow}>보기</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={DeleteParagraph}>삭제</Dropdown.Item>
-                    <Dropdown.Item as="button">수정</Dropdown.Item>
                 </DropdownButton>
             </Card.Body>
             </Card>

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Post } from '@nestjs/common';
 import { ScrapRequestDto } from './dtos/scrap.request.dto';
 import { ScrapsService } from './scraps.service';
 

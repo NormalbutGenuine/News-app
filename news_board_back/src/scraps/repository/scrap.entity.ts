@@ -19,6 +19,11 @@ export class Scraps extends BaseEntity {
 
     @Column()
     @IsNotEmpty()
+    @IsString()
+    title: string;
+
+    @Column()
+    @IsNotEmpty()
     created_at : Date
 
     @Column()
