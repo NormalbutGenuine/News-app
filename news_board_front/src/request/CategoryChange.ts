@@ -13,5 +13,4 @@ export class CategoryNumber {
     getCategoryNum(){
         return this.categoryNum
     }
-    
 }

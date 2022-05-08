@@ -7,7 +7,7 @@ import { Iinfo } from "../../types/InfoType";
 import { URLToCategory } from "../../types/CategoryConfig";
 import cookies from "react-cookies";
 
-export function cutText(txt:string) :string {
+function cutText(txt:string) :string {
     if (txt.length > 139) txt = txt.substring(0, 139) + "..."
     return txt
 }

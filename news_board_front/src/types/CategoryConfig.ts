@@ -21,4 +21,3 @@ export const URLToCategory = (category : string) => {
             return category
     }
 }
-

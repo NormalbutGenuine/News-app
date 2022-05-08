@@ -1,34 +1,12 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import { Tab, Nav, Row, Pagination, Col } from "react-bootstrap";
 import ScrapList from "./ScrapCard";
 
 // @ts-ignore
 const TabView : React.FC = ({scrapList}) => {
-    let showArr : any[] = []
-    let [presentArr, setPresentArr] = useState([])
     let [active, setActive] = useState(1)
-    useEffect(() => {
-        console.log(active)
-    }, [active])
-    function MakeShowArr() {        
-        let subArr : any[] = []
-        let preArr : any[] = []
-        scrapList.filter((value : any, idx : any) => {
-            subArr.push(value)
-            if (idx % 5 === 4) {
-                preArr.push(scrapList.slice(idx-4, idx+1))
-                subArr =  []
-            }
-            if (idx === scrapList.length - 1) {
-                preArr.push(subArr)
-            }
-        })
-        return preArr
-    }
 
     function ScrapComponent() {
-        showArr = MakeShowArr()
-        console.log(showArr[0])
         
         console.log(scrapList)
         return (
@@ -80,10 +58,10 @@ const TabView : React.FC = ({scrapList}) => {
                     </Nav>
                     </Col>
                     <Col sm={9} >
-                    <Tab.Content>
-                        <ScrapComponent />
-                        <Pagination_Component />
-                    </Tab.Content>
+                        <Tab.Content>
+                            <ScrapComponent />
+                            <Pagination_Component />
+                        </Tab.Content>
                     </Col>
                 </Row>
             </Tab.Container>

@@ -4,20 +4,12 @@ import { ArticleModule } from './article/article.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ScrapsModule } from './scraps/scraps.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'tiger',
-      database: 'NewsAppDB',
-      entities: ["dist/**/*.entity.{js, ts}"],
-      synchronize: true,
-      autoLoadEntities: true
-    }),
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot(),
     ArticleModule,
     UsersModule,
     AuthModule,

@@ -67,7 +67,6 @@ export async function getSportsNews() : Promise<object> {
         }
         if(newsObj.newsURL) newsObj.body = await getNewsBody(String(newsObj.newsURL), NewsCategory[ENews_Category.SPORTS])
         if (Object.values(newsObj).filter(value => value).length === 7) newsBox.push(newsObj)
-       
     }
     return newsBox   
 }

@@ -27,7 +27,7 @@ export class AuthService {
     );
 
     if (!isPasswordValidated) {
-      throw new UnauthorizedException('이메일과 비밀번호를 확인해주세요.');
+      throw new UnauthorizedException('이메일과 비밀번호를 확인해주세요.')
     }
 
     const payload = { email: email, sub: user.id };

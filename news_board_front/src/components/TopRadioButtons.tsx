@@ -5,7 +5,6 @@ import { CategoryNumber } from "../request/CategoryChange";
 let categoryNumber = new CategoryNumber()
 
 const Category : React.FC = () => {
-    const [checked, setChecked] = useState(false);
     const [radioValue, setRadioValue] = useState('1');
 
     const radios = [

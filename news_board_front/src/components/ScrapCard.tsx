@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import { Card, Modal, DropdownButton, Dropdown } from "react-bootstrap";
 import axios from "axios";
 import cookies from "react-cookies";
-import { cutText } from "../pages/mainPage/Main";
 
 // @ts-ignore
 const ScrapList : React.FC = ({text, title}) => {
