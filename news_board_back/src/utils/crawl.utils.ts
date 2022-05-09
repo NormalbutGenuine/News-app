@@ -4,7 +4,7 @@ import axios from "axios"
 import {ENews_Category, NewsCategory} from "../configs/category.config"
 import { newsData } from "src/article/dto/NewsData.dto"
 
-export async function getHtml(category : string) {
+export async function getHtml(category : string) : Promise<any> {
     try{
         const htmlData = await axios.get(category, {
         responseType: "arraybuffer"
@@ -15,8 +15,8 @@ export async function getHtml(category : string) {
     }
 }
 
-export async function getNews(NewsSection) : Promise<any[]> {
-    let newsBox = []
+export async function getNews(NewsSection) : Promise<newsData[]> {
+    let newsBox : newsData[]= []
     try {
         const res = await getHtml(NewsSection)
         let category = NewsCategory[NewsSection]
@@ -47,7 +47,7 @@ export async function getNews(NewsSection) : Promise<any[]> {
     return newsBox
 }
 
-export async function getSportsNews() : Promise<object> {
+export async function getSportsNews() : Promise<newsData[]> {
     let newsBox = []
     const res = await getHtml(ENews_Category.SPORTS)
     const content = iconv.decode(res.data, "utf-8").toString()
@@ -71,7 +71,7 @@ export async function getSportsNews() : Promise<object> {
     return newsBox   
 }
 
-export async function getNewsBody(URL:string, category : string = "null") {
+export async function getNewsBody(URL:string, category : string = "null") : Promise<string> {
     const res = await getHtml(URL);
     const content = iconv.decode(res.data, "utf-8").toString()
     const $ = cheerio.load(content)

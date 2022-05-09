@@ -3,6 +3,7 @@ import { UsersRepository } from 'src/users/repository/user.repository';
 import { LoginRequestDto } from './dto/login.request.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { IJwtToken } from 'src/configs/jwtToken.config';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +12,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async jwtLogIn(data: LoginRequestDto) {
+  async jwtLogIn(data: LoginRequestDto) : Promise<IJwtToken> {
     const { email, password } = data;
     //* 해당하는 email이 있는지
     const user = await this.usersRepository.findUserByEmail(email)

@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Payload } from './jwt.payload';
 import { UsersRepository } from 'src/users/repository/user.repository';
+import { UserRequestDto } from 'src/users/dtos/users.request.dto';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -14,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: Payload) {
+  async validate(payload: Payload) : Promise<UserRequestDto | Error> {
       console.log(payload)
     const user = await this.usersRepository.findUserByIdWithoutPassword(
       payload.sub,
@@ -27,7 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
   }
 
-  TokenToEmail(payload: Payload) {
+  TokenToEmail(payload: Payload) : string {
     console.log(payload)
     const email = payload.email;
     return email;

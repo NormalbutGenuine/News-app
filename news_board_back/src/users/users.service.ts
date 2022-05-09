@@ -9,7 +9,7 @@ import * as bcrypt from "bcrypt";
 export class UsersService {
     constructor (@InjectRepository(UsersRepository) private userRepository: UsersRepository) {}
 
-    async checkEmailExists(email) {
+    async checkEmailExists(email) : Promise<boolean | Error> {
         const res = await this.userRepository.findUserByEmail(email)
         if (res) throw new UnauthorizedException("email already exists")
         else return true

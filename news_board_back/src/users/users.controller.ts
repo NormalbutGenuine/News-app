@@ -25,13 +25,13 @@ export class UsersController {
     }
 
     @Post("/exists")
-    checkExists(@Body() mail) {
+    checkExists(@Body() mail) : Promise<boolean | Error> {
         const {email} = mail
         return this.usersService.checkEmailExists(email)
     }
 
     @Post("/login")
-    logIn(@Body() data: LoginRequestDto) {
+    logIn(@Body() data: LoginRequestDto) : object {
         return this.authService.jwtLogIn(data);
     }
 }

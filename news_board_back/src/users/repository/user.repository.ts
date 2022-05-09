@@ -5,7 +5,7 @@ import { User } from "./user.entity";
 @EntityRepository(User)
 export class UsersRepository extends Repository<User>{
 
-    async findUserByEmail(email) {
+    async findUserByEmail(email) : Promise<User> {
         let res = await User.findOne({email: email})
         return res
     }
