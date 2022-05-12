@@ -12,7 +12,7 @@ export class ScrapsController {
     }
 
     @Post("/list")
-    getScraps(@Body() token : string) : Promise<Scraps[]>{
+    getScraps(@Body() token) : Promise<Scraps[]>{
         return this.scrapsService.findScraps(token)
     }
 
