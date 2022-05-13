@@ -4,6 +4,6 @@ export interface newsData {
     lede: string;
     imgSrc: string;
     newsURL: string;
-    body: string;
+    body?: string;
     date: Date;
 }

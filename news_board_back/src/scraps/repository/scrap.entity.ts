@@ -5,27 +5,27 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class Scraps extends BaseEntity {
     @PrimaryGeneratedColumn()
     @IsNotEmpty()
-    id: number;
+    id?: number;
 
     @Column()
     @IsEmail()
     @IsNotEmpty()
-    email: string;
+    email?: string;
 
     @Column()
     @IsNotEmpty()
     @IsString()
-    paragraph: string;
+    paragraph?: string;
 
     @Column()
     @IsNotEmpty()
     @IsString()
-    title: string;
+    title?: string;
 
     @Column()
     @IsNotEmpty()
-    created_at : Date
+    created_at?: Date
 
     @Column()
-    updated_at : Date | null
+    updated_at?: Date | null
 }

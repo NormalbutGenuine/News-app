@@ -33,7 +33,7 @@ export async function getNews(NewsSection): Promise<newsData[]> {
                 lede: $(elem).find("div.cluster_text div.cluster_text_lede").text(),
                 imgSrc: $(elem).find("div.cluster_thumb img").attr("src"),
                 newsURL: $(elem).find("div.cluster_text a").attr("href"),
-                body: "null",
+                body: null,
                 date: new Date()
             }
             if (newsObj.newsURL) newsObj.body = await getNewsBody(String(newsObj.newsURL))
@@ -61,7 +61,7 @@ export async function getSportsNews(): Promise<newsData[]> {
             // 스포츠 뉴스 이미지는 url에 접근 권한이 없음
             imgSrc: "https://static01.nyt.com/images/2022/04/16/sports/16nba-playoffs-preview-lede/merlin_204814425_2804d7cb-ae53-46ec-8bed-e1b36c8c9600-threeByTwoMediumAt2X.jpg",
             newsURL: "https://sports.news.naver.com" + $(elem).find("a.link_today").attr("href"),
-            body: "null",
+            body: null,
             date: new Date()
         }
         if (newsObj.newsURL) newsObj.body = await getNewsBody(String(newsObj.newsURL), NewsCategory[ENews_Category.SPORTS])
