@@ -7,7 +7,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { forwardRef } from '@nestjs/common';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UsersRepository]), forwardRef(() => AuthModule)],
+  imports: [TypeOrmModule.forFeature([UsersRepository]), forwardRef(() => AuthModule)], // forFeature: 이 domain 안에서만 유효한 설정
   providers: [UsersService, UsersRepository],
   controllers: [UsersController],
   exports: [UsersService, UsersRepository]

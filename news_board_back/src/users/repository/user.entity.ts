@@ -1,5 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
+import { Scraps } from "src/scraps/repository/scrap.entity";
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany } from "typeorm";
 
 @Entity()
 export class User extends BaseEntity{
@@ -21,4 +22,8 @@ export class User extends BaseEntity{
     @IsString()
     @IsNotEmpty()
     name: string;
+
+    // relations
+    @OneToMany(() => Scraps, scrap => scrap.email)
+    scraps: Scraps[];
 }

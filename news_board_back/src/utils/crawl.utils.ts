@@ -15,7 +15,7 @@ export async function getHtml(category : string) : Promise<any> {
     }
 }
 
-export async function getNews(NewsSection) : Promise<newsData[]> {
+export async function getNews(NewsSection : string) : Promise<newsData[]> {
     let newsBox : newsData[]= []
     try {
         const res = await getHtml(NewsSection)
@@ -23,9 +23,8 @@ export async function getNews(NewsSection) : Promise<newsData[]> {
         const content = iconv.decode(res.data, "EUC-KR").toString() // iconv 객체가 undefined 되는 오류
         const $ = cheerio.load(content)
         const list = $("ul li")
-
-        //@ts-ignore
-        let newsObj : newsData = {}
+        
+        let newsObj = {} as newsData
         
         for (let elem of list)  {
             newsObj = {
@@ -34,7 +33,7 @@ export async function getNews(NewsSection) : Promise<newsData[]> {
                 lede : $(elem).find("div.cluster_text div.cluster_text_lede").text(),
                 imgSrc : $(elem).find("div.cluster_thumb img").attr("src"),
                 newsURL : $(elem).find("div.cluster_text a").attr("href"),
-                body : "null",
+                body : undefined,
                 date : new Date()
             }
             if(newsObj.newsURL) newsObj.body = await getNewsBody(String(newsObj.newsURL))
@@ -48,7 +47,7 @@ export async function getNews(NewsSection) : Promise<newsData[]> {
 }
 
 export async function getSportsNews() : Promise<newsData[]> {
-    let newsBox = []
+    let newsBox : newsData[] = []
     const res = await getHtml(ENews_Category.SPORTS)
     const content = iconv.decode(res.data, "utf-8").toString()
     const $ = cheerio.load(content)
@@ -62,13 +61,13 @@ export async function getSportsNews() : Promise<newsData[]> {
             // 스포츠 뉴스 이미지는 url에 접근 권한이 없음
             imgSrc : "https://static01.nyt.com/images/2022/04/16/sports/16nba-playoffs-preview-lede/merlin_204814425_2804d7cb-ae53-46ec-8bed-e1b36c8c9600-threeByTwoMediumAt2X.jpg",
             newsURL : "https://sports.news.naver.com"+$(elem).find("a.link_today").attr("href"),
-            body : "null",
+            body : undefined,
             date : new Date()
         }
         if(newsObj.newsURL) newsObj.body = await getNewsBody(String(newsObj.newsURL), NewsCategory[ENews_Category.SPORTS])
         if (Object.values(newsObj).filter(value => value).length === 7) newsBox.push(newsObj)
     }
-    return newsBox   
+    return newsBox
 }
 
 export async function getNewsBody(URL:string, category : string = "null") : Promise<string> {

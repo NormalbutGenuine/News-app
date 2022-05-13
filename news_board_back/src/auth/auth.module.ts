@@ -16,7 +16,7 @@ import { ConfigModule } from '@nestjs/config';
       signOptions: { expiresIn: '1y' },
     }),
 
-    forwardRef(() => UsersModule),
+    forwardRef(() => UsersModule), // 순환참조를 방지하기 위한 정방향참조 메서드
   ],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],

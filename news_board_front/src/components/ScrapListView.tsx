@@ -30,7 +30,7 @@ const TabView : React.FC = ({scrapList}) => {
     const Pagination_Component : React.FC = () => {
         let items = []
         let page_number = 0
-        for (let number = 1; number <= scrapList.length; number++) {
+        for (let number = 1; number < scrapList.length; number++) {
             if (number % 5 === 0 || number === 1) {
                 page_number+=1
                 items.push(

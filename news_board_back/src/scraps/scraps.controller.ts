@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { ScrapRequestDto } from './dtos/scrap.request.dto';
 import { Scraps } from './repository/scrap.entity';
 import { ScrapsService } from './scraps.service';
@@ -7,17 +8,29 @@ import { ScrapsService } from './scraps.service';
 export class ScrapsController {
     constructor(private readonly scrapsService: ScrapsService) {}
     @Post("")
-    async SaveParagraph(@Body() body:ScrapRequestDto) : Promise<Scraps> {
-        return await this.scrapsService.createScrap(body)
+    async SaveParagraph(
+        @Res() res: Response,
+        @Body() body: ScrapRequestDto,
+    ) {
+        const data = await this.scrapsService.createScrap(body)
+        res.json(data)
     }
 
     @Post("/list")
-    getScraps(@Body() token) : Promise<Scraps[]>{
-        return this.scrapsService.findScraps(token)
+    async getScraps(
+        @Res() res: Response,
+        @Body() token
+        ) {
+        const data = await this.scrapsService.findScraps(token)
+        res.json(data)
     }
 
     @Delete("/delete")
-    deleteScrap(@Body() data) : Promise<object> {
-        return this.scrapsService.deleteScrapService(data)
+    async deleteScrap(
+        @Res() res: Response,
+        @Body() data
+        )  {
+        const response = await this.scrapsService.deleteScrapService(data)
+        res.json(response)
     }
 }

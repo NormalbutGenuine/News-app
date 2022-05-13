@@ -14,6 +14,8 @@ export const NewsCategory = {
   [ENews_Category.SPORTS]: 'sports',
 };
 
+export type categoryParams = 'economy' | 'science' | 'society' | 'politics' | 'sports';
+
 export const CategoryURL = {
   ["economy"]: 'https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=101',
   ["politics"]: 'https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=100',
