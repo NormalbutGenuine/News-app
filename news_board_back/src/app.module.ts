@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ArticleModule } from './article/article.module';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
-import { ScrapsModule } from './scraps/scraps.module';
+import { ArticleModule } from './apis/article/article.module';
+import { UsersModule } from './apis/users/users.module';
+import { AuthModule } from './apis/auth/auth.module';
+import { ScrapsModule } from './apis/scraps/scraps.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({

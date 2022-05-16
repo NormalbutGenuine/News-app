@@ -2,7 +2,7 @@ import * as iconv from "iconv-lite"
 import cheerio from "cheerio"
 import axios from "axios"
 import {ENews_Category, NewsCategory} from "../configs/category.config"
-import { newsData } from "src/article/dto/NewsData.dto"
+import { newsData } from "src/apis/article/dto/NewsData.dto"
 
 export async function getHtml(category : string) : Promise<any> {
     try{
@@ -42,7 +42,6 @@ export async function getNews(NewsSection : string) : Promise<newsData[]> {
     }catch (e){
         console.log("ERROR IS: "+e)
     }
-
     return newsBox
 }
 
@@ -70,13 +69,14 @@ export async function getSportsNews() : Promise<newsData[]> {
     return newsBox
 }
 
-export async function getNewsBody(URL:string, category : string = "null") : Promise<string> {
+export async function getNewsBody(URL:string, category : string | undefined = undefined) : Promise<string> {
     const res = await getHtml(URL);
     const content = iconv.decode(res.data, "utf-8").toString()
     const $ = cheerio.load(content)
-    if (category != "null") {
+    // SPORTS
+    if (category) {
         return $("#newsEndContents").text().replace(/(\r\n|\n|\r|\t)/gm, "");
-    }
+    } // Except SPORTS
     else {
         return $("#dic_area").text().replace(/(\r\n|\n|\r|\t)/gm, "");
     }

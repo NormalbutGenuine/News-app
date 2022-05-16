@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { ScrapRequestDto } from './dtos/scrap.request.dto';
-import { Scraps } from './repository/scrap.entity';
 import { ScrapsService } from './scraps.service';
 
 @Controller('scraps')

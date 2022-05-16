@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { getNews, getSportsNews } from '../utils/crawl.utils';
+import { getNews, getSportsNews } from '../../utils/crawl.utils';
 import { newsData } from './dto/NewsData.dto';
 
 @Injectable()
