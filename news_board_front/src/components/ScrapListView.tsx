@@ -14,11 +14,11 @@ const TabView : React.FC = ({scrapList}) => {
             
             {scrapList.map((item : any, idx : any) => {
                 // @ts-ignore
-                if (active === 1 && idx < 5) return <ScrapList text={item.paragraph} title={item.title} key={idx} />
+                if (active === 1 && idx < 5) return <ScrapList text={item.paragraph} title={item.title} key={idx} index={idx}/>
                 // active = 5 -> idx 5~9 , active = 10 -> idx 10 ~ 14
                 else if (active >= 5 && idx >= active && idx < 5 + active) {
                     // @ts-ignore
-                    return <ScrapList text={item.paragraph} title={item.title} key={idx} />
+                    return <ScrapList text={item.paragraph} title={item.title} key={idx} index={idx} />
                 }
             })
             }

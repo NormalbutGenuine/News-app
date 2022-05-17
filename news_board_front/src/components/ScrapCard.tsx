@@ -4,17 +4,21 @@ import axios from "axios";
 import cookies from "react-cookies";
 
 // @ts-ignore
-const ScrapList : React.FC = ({text, title}) => {
+const ScrapList : React.FC = ({text, title, index}) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    console.log(index)
     async function DeleteParagraph() {
         try {
             const res = await axios.delete("http://localhost:3030/scraps/delete", {
                 data: {
-                    email: cookies.load("access token"),
-                    paragraph: document.getElementById("ScrapBody")?.innerText
-                }
+                    paragraph: document.getElementById(`ScrapBody${index}`)?.innerText
+                },
+                withCredentials: true,
+                headers: {
+                    Authorization:`Bearer ${cookies.load("access token")}`,
+                },
             })
             console.log(res)
         } catch(err) {
@@ -33,7 +37,7 @@ const ScrapList : React.FC = ({text, title}) => {
             <Card style={{ width: '200px', margin: "10px" }}>
             <Card.Body>
                 <Card.Title style={{overflow: "hidden", height: "95px", wordBreak: "break-all"}}>{title}</Card.Title>
-                <Card.Text id="ScrapBody" style={{overflow: "hidden", wordBreak: "break-all", height: "220px"}}>
+                <Card.Text id={`ScrapBody${index}`} style={{overflow: "hidden", wordBreak: "break-all", height: "220px"}}>
                     {text}
                 </Card.Text>
                 <DropdownButton id="dropdown-item-button" title="select">

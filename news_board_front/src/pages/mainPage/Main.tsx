@@ -107,9 +107,13 @@ const Main : React.FC = () => {
                 const title = document.getElementById("example-custom-modal-styling-title")?.innerText
                 try {
                     const res = await axios.post("http://localhost:3030/scraps", {
-                        email: cookies.load("access token"),
                         paragraph: paragraph,
                         title: title
+                    } , {
+                        withCredentials: true,
+                        headers: {
+                            Authorization:`Bearer ${cookies.load("access token")}`,
+                        }
                     })
                     console.log(res)
                     setVisible((visible) => "Saved!")

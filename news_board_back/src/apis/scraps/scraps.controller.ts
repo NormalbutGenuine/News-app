@@ -1,35 +1,47 @@
-import { Body, Controller, Delete, Post, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Delete, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Request, Response } from 'express';
+import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 import { ScrapRequestDto } from './dtos/scrap.request.dto';
 import { ScrapsService } from './scraps.service';
 
 @Controller('scraps')
+@UseGuards(JwtAuthGuard)
 export class ScrapsController {
     constructor(private readonly scrapsService: ScrapsService) {}
+
     @Post("")
     async SaveParagraph(
         @Res() res: Response,
-        @Body() body: ScrapRequestDto,
+        @Req() req: Request,
+        @Body() body: ScrapRequestDto
     ) {
-        const data = await this.scrapsService.createScrap(body)
+        // @ts-ignore 
+        const email = req.user.email
+        const data = await this.scrapsService.createScrap(body, email)
         res.json(data)
     }
 
-    @Post("/list")
+    @Get("/list")
     async getScraps(
         @Res() res: Response,
-        @Body() token
+        @Req() req: Request
         ) {
-        const data = await this.scrapsService.findScraps(token)
+        // @ts-ignore
+        const email = req.user.email
+        const data = await this.scrapsService.findScraps(email)
         res.json(data)
     }
 
     @Delete("/delete")
     async deleteScrap(
         @Res() res: Response,
+        @Req() req: Request,
         @Body() data
-        )  {
-        const response = await this.scrapsService.deleteScrapService(data)
+        ) {
+        // @ts-ignore
+        const email = req.user.email
+        const paragraph = data.paragraph
+        const response = await this.scrapsService.deleteScrapService(email, paragraph)
         res.json(response)
     }
 }

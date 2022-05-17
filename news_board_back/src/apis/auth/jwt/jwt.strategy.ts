@@ -16,11 +16,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: Payload) : Promise<UserRequestDto | Error> {
-      console.log(payload)
     const user = await this.usersRepository.findUserByIdWithoutPassword(
-      payload.sub,
+      payload.email,
     );
-
     if (user) {
       return user; // request.user
     } else {
@@ -29,7 +27,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   TokenToEmail(payload: Payload) : string {
-    console.log(payload)
     const email = payload.email;
     return email;
   }
