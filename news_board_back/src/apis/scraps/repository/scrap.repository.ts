@@ -1,6 +1,5 @@
-import * as jwt from "jsonwebtoken";
 import { EntityRepository, Repository } from "typeorm";
-import { Scraps } from "./scrap.entity";
+import { Scraps } from "../../../entities/scrap.entity";
 
 @EntityRepository(Scraps)
 export class ScrapsRepository extends Repository<Scraps>{
@@ -9,6 +8,7 @@ export class ScrapsRepository extends Repository<Scraps>{
         let res = await Scraps.findOne({paragraph: text, email: email})
         return res
     }
+
     async saveScrap(email : string, paragraph : string, title: string) : Promise<Scraps> {
         const created_at = new Date()
         const updated_at = new Date()

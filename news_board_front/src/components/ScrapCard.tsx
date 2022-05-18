@@ -8,7 +8,6 @@ const ScrapList : React.FC = ({text, title, index}) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    console.log(index)
     async function DeleteParagraph() {
         try {
             const res = await axios.delete("http://localhost:3030/scraps/delete", {

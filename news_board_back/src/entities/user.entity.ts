@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-import { Scraps } from "src/apis/scraps/repository/scrap.entity";
+import { Scraps } from "src/entities/scrap.entity";
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany } from "typeorm";
 
 @Entity()
