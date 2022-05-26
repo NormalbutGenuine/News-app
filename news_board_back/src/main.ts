@@ -9,7 +9,7 @@ async function bootstrap() {
     origin: true,
     credentials: true
   }
-  ); 
+  );
   const PORT = process.env.PORT;
   await app.listen(PORT); // PORT 번호로 오는 요청을 대기한다.
 }
