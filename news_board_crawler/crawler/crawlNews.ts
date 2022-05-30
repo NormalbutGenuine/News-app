@@ -27,3 +27,5 @@ async function getNews(category : Enews_category) {
         console.log("ERROR IS: "+e)
     }
 }
+
+getNews(Enews_category.NANO)

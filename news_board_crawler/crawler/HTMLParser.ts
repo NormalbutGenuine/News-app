@@ -9,11 +9,15 @@ export async function ParseHTML(content, URL, newsObj) : Promise<newsData[]> {
     switch (URL) {
         case Enews_category.BIO:
             return await BIONewsHTMLParser(content, newsObj)
-            break;
-        
+            
         case Enews_category.BLOCKCHAIN:
             return await BlockChainHTMLParser(content, newsObj)
-            break;
+            
+        case Enews_category.AI:
+            return await AIHTMLParser(content, newsObj)
+
+        case Enews_category.NANO:
+            return await NANOHTMLParser(content, newsObj)
     }
 }
 
@@ -64,16 +68,75 @@ async function BlockChainHTMLParser(content, newsObj) {
     return newsArr
 }
 
+async function AIHTMLParser(content, newsObj) {
+    let newsArr : newsData[] = []
+    let idx : number = 0
+    const $ = cheerio.load(content)
+    const selector = $("#skin-12 .auto-titles")
+    for (let elem of selector) {
+        if ($(".auto-images.ratio-32").attr("style") === undefined) continue
+        
+        const imgSource = $(".auto-images.ratio-32").slice(idx, idx+1).attr("style").substring(21, String($(".auto-images.ratio-32").slice(idx, idx+1).attr("style")).length-1)
+        
+        newsObj = {
+            title : $(elem).text().replace(/(\r\n|\n|\r|\t)/gm, ""),
+            category : "AI",
+            lede : $("#skin-12 .auto-sums").slice(idx,idx+1).text(),
+            imgSrc : imgSource,
+            newsURL : Enews_category.AI + $(".auto-valign").slice(idx+1, idx+2).attr("href"),
+            body : undefined,
+            date : new Date()
+        }
+        idx = idx + 1
+        if (newsObj.body === undefined) newsObj.body = await getNewsBody(newsObj.newsURL, Enews_category.AI)
+        if (newsObj.body != undefined) newsObj.lede = newsObj.body.substring(0, 80) + "..."
+        if (newsObj.title != '') newsArr.push(newsObj)
+    }
+    console.log(newsArr)
+    return newsArr
+}
+
+async function NANOHTMLParser(content, newsObj) {
+    let newsArr : newsData[] = []
+    let idx : number = 0
+    const $ = cheerio.load(content)
+    const selector = $(".Blog-title")
+    for (let elem of selector) {
+        const imgSource = $("img").attr("src")
+        newsObj = {
+            title : $(elem).text().replace(/(\r\n|\n|\r|\t)/gm, ""),
+            category : "NANO",
+            lede : $(".Blog-meta--bottom .Blog-meta-item").slice(idx, idx+1).text(),
+            imgSrc : imgSource,
+            newsURL : Enews_category.NANO + $(".Blog-header-content-link").slice(idx, idx+1).attr("href"),
+            body : undefined,
+            date : new Date()
+        }
+        idx = idx + 1
+        if (newsObj.body === undefined) newsObj.body = await getNewsBody(newsObj.newsURL, Enews_category.NANO)
+        if (newsObj.body != undefined) newsObj.lede = newsObj.body.substring(0, 80) + "..."
+        if (newsObj.title != '') newsArr.push(newsObj)
+    }
+    console.log(newsArr)
+    return newsArr
+}
+
 async function getNewsBody(URL : string, category: string) : Promise<string> {
     const res = await getHtml(URL)
     const content = iconv.decode(res.data, "utf-8").toString()
     const $ = cheerio.load(content)
-    let body : string = ""
+
     switch (category) {
         case Enews_category.BIO:
             return $("#article-view-content-div").text().replace(/(\r\n|\n|\r|\t)/gm, "")
 
         case Enews_category.BLOCKCHAIN:
-            return $("p").text().replace(/(\r\n|\n|\r|\t)/gm, "")       
+            return $("p").text().replace(/(\r\n|\n|\r|\t)/gm, "")     
+
+        case Enews_category.AI:
+            return $("p").text().replace(/(\r\n|\n|\r|\t)/gm, "")
+
+        case Enews_category.NANO:
+            return $("p").text().replace(/(\r\n|\n|\r|\t)/gm, "")
     }
 }
