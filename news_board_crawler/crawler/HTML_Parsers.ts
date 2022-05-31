@@ -4,24 +4,7 @@ import { newsData } from "../types/NewsData.Type"
 import {getHtml} from "./crawlNews"
 import * as iconv from "iconv-lite"
 
-export async function ParseHTML(content, URL, newsObj) : Promise<newsData[]> {
-    // HTML Data를 가져오는 사이트가 전부 다르기 때문에 어쩔 수 없이 사이트마다 다른 코드가 들어 간다.
-    switch (URL) {
-        case Enews_category.BIO:
-            return await BIONewsHTMLParser(content, newsObj)
-            
-        case Enews_category.BLOCKCHAIN:
-            return await BlockChainHTMLParser(content, newsObj)
-            
-        case Enews_category.AI:
-            return await AIHTMLParser(content, newsObj)
-
-        case Enews_category.NANO:
-            return await NANOHTMLParser(content, newsObj)
-    }
-}
-
-async function BIONewsHTMLParser(content, newsObj) {
+export async function BIONewsHTMLParser(content, newsObj) {
     let newsBox : newsData[] = []
     const $ = cheerio.load(content)
     const selector = $("ul li")
@@ -43,7 +26,7 @@ async function BIONewsHTMLParser(content, newsObj) {
     return newsBox
 }
 
-async function BlockChainHTMLParser(content, newsObj) {
+export async function BlockChainHTMLParser(content, newsObj) {
     let newsArr : newsData[] = []
     const $ = cheerio.load(content)
     const selector = $(".content")
@@ -68,7 +51,7 @@ async function BlockChainHTMLParser(content, newsObj) {
     return newsArr
 }
 
-async function AIHTMLParser(content, newsObj) {
+export async function AIHTMLParser(content, newsObj) {
     let newsArr : newsData[] = []
     let idx : number = 0
     const $ = cheerio.load(content)
@@ -96,7 +79,7 @@ async function AIHTMLParser(content, newsObj) {
     return newsArr
 }
 
-async function NANOHTMLParser(content, newsObj) {
+export async function NANOHTMLParser(content, newsObj) {
     let newsArr : newsData[] = []
     let idx : number = 0
     const $ = cheerio.load(content)
@@ -121,6 +104,32 @@ async function NANOHTMLParser(content, newsObj) {
     return newsArr
 }
 
+export async function METAVERSE_HTMLParser(content, newsObj) {
+    let newsArr : newsData[] = []
+    let idx : number = 0
+    const $ = cheerio.load(content)
+    const selector = $(".cs-entry__title a")
+    // console.log($(".cs-entry__thumbnail .cs-overlay-background img").last().attr("src"))
+    for (let elem of selector) {
+        const imgSource = $(".cs-entry__thumbnail .cs-overlay-background img").slice(idx,idx+1).attr("src")
+        newsObj = {
+            title : $(elem).text().replace(/(\r\n|\n|\r|\t)/gm, ""),
+            category : "METAVERSE",
+            lede : $(".Blog-meta--bottom .Blog-meta-item").slice(idx, idx+1).text(),
+            imgSrc : imgSource,
+            newsURL : $(elem).attr("href"),
+            body : undefined,
+            date : new Date()
+        }
+        idx = idx + 1
+        if (newsObj.body === undefined) newsObj.body = await getNewsBody(newsObj.newsURL, Enews_category.METAVERSE)
+        if (newsObj.body != undefined) newsObj.lede = newsObj.body.substring(0, 80) + "..."
+        if (newsObj.title != '') newsArr.push(newsObj)
+    }
+    console.log(newsArr)
+    return newsArr
+}
+
 async function getNewsBody(URL : string, category: string) : Promise<string> {
     const res = await getHtml(URL)
     const content = iconv.decode(res.data, "utf-8").toString()
@@ -137,6 +146,9 @@ async function getNewsBody(URL : string, category: string) : Promise<string> {
             return $("p").text().replace(/(\r\n|\n|\r|\t)/gm, "")
 
         case Enews_category.NANO:
+            return $("p").text().replace(/(\r\n|\n|\r|\t)/gm, "")
+        
+        case Enews_category.METAVERSE:
             return $("p").text().replace(/(\r\n|\n|\r|\t)/gm, "")
     }
 }

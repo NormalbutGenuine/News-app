@@ -2,7 +2,7 @@ import * as iconv from "iconv-lite"
 import axios from "axios"
 import {Enews_category} from "../types/newsCategory.config"
 import { newsData } from "../types/NewsData.Type"
-import { ParseHTML } from "./HTMLParser"
+import { ParseHTML } from "./IndexHTMLParser"
 
 export async function getHtml(category : string) : Promise<any> {
     try{
@@ -27,5 +27,3 @@ async function getNews(category : Enews_category) {
         console.log("ERROR IS: "+e)
     }
 }
-
-getNews(Enews_category.NANO)
