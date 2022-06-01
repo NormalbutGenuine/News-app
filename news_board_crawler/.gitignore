@@ -1,3 +1,4 @@
 .env
 accessToken.json
 node_modules
+./types/sheetsAPI.config.types.ts

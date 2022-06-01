@@ -10,12 +10,14 @@ async function GetSheetsInstance() {
 
 export async function UpdateDataToSheets(memberArray : Array<string[]>) {
     const sheets = await GetSheetsInstance()
-    const res = await sheets.spreadsheets.values.update(configOBJ(memberArray)) // update는 데이터가 있는 셀만 적용된다.
+    const request = configOBJ(memberArray)
+    const res = await sheets.spreadsheets.values.update(request) // update는 데이터가 있는 셀만 적용된다.
     return res
 }
 
 export async function InsertDataToSheets(memberArray : Array<string[]>) {
     const sheets = await GetSheetsInstance()
-    const res = await sheets.spreadsheets.values.append(configOBJ(memberArray))
+    const request = configOBJ(memberArray)
+    const res = await sheets.spreadsheets.values.append(request)
     return res
 }

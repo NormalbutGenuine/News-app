@@ -1,5 +1,5 @@
 export enum Enews_category {
-    BIO = "http://www.biotimes.co.kr",
+    BIO = "http://www.biotimes.co.kr/",
     BLOCKCHAIN = "http://www.blockchaintoday.co.kr/",
     NANO = "https://nano-magazine.com",
     AI = "http://www.aitimes.kr",
