@@ -7,7 +7,6 @@ export async function menu(index : number, data) {
             data = await getNews(Enews_category.BIO)
             return data
             
-    
         case 2:
             data = await getNews(Enews_category.BLOCKCHAIN)
             return data

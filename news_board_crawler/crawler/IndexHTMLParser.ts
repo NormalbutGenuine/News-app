@@ -32,4 +32,3 @@ export async function ParseHTML(content, URL, newsObj) : Promise<newsData[]> {
             return data
     }
 }
-

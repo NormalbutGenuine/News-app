@@ -75,7 +75,6 @@ export async function AIHTMLParser(content, newsObj) {
         if (newsObj.body != undefined) newsObj.lede = newsObj.body.substring(0, 80) + "..."
         if (newsObj.title != '') newsArr.push(newsObj)
     }
-    console.log(newsArr)
     return newsArr
 }
 
@@ -100,7 +99,6 @@ export async function NANOHTMLParser(content, newsObj) {
         if (newsObj.body != undefined) newsObj.lede = newsObj.body.substring(0, 80) + "..."
         if (newsObj.title != '') newsArr.push(newsObj)
     }
-    console.log(newsArr)
     return newsArr
 }
 
@@ -126,7 +124,6 @@ export async function METAVERSE_HTMLParser(content, newsObj) {
         if (newsObj.body != undefined) newsObj.lede = newsObj.body.substring(0, 80) + "..."
         if (newsObj.title != '') newsArr.push(newsObj)
     }
-    console.log(newsArr)
     return newsArr
 }
 

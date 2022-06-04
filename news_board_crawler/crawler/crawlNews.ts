@@ -22,7 +22,6 @@ export async function getNews(category : Enews_category) : Promise<newsData[]> {
         const html = await getHtml(category)
         const content = iconv.decode(html.data, "utf-8").toString()
         newsBox = await ParseHTML(content, category, newsObj)
-        console.log(newsBox)
         return newsBox
     }catch(e) {
         console.log("ERROR IS: "+e)
