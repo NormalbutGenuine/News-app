@@ -58,7 +58,7 @@ const Main : React.FC = () => {
         return (
             <div style={{ display: 'flex', flexDirection: 'row', flexWrap: "wrap" }}>
                 <Card style={{ width: '21rem', height: "31rem", left: "175px", top: "95px" , padding: "5px", margin: "30px", position: "relative"}}>
-                    <Card.Img variant="top" src={box[num.num].imgSrc} style={{objectFit: "fill"}}/>
+                    <Card.Img variant="top" src={box[num.num].imgSrc} style={{objectFit: "fill", height: "200px"}}/>
                     <Card.Body>
                         <Card.Title>{cutText(box[num.num].title)}</Card.Title>
                         <Card.Text>

@@ -49,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "@types/quill": "^2.0.9",
     "@types/react-cookies": "^0.1.0"
   }
 }

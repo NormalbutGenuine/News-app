@@ -8,16 +8,16 @@ const Category : React.FC = () => {
     const [radioValue, setRadioValue] = useState('1');
 
     const radios = [
-      { name: '정치', value: '1' },
-      { name: '경제', value: '2' },
-      { name: '사회', value: '3' },
-      { name: '과학', value: '4' },
-      { name: '스포츠', value: '5' }
+      { name: '바이오', value: '1' },
+      { name: '나노', value: '2' },
+      { name: '블록체인', value: '3' },
+      { name: '인공지능', value: '4' },
+      { name: '메타버스', value: '5' }
     ];
   
     return (
       <>
-        <ButtonGroup style={{left: "576px", top: "50px", zIndex: "2"}}>
+        <ButtonGroup style={{left: "537px", top: "50px", zIndex: "2"}}>
           {radios.map((radio, idx) => (
             <ToggleButton
               style={{margin: "8px", borderRadius: "2px", fontFamily: "sans-serif"}}
@@ -31,6 +31,7 @@ const Category : React.FC = () => {
               onChange={(e) => setRadioValue(e.currentTarget.value)}
               onClick={() => categoryNumber.setCategoryNum(radio.value)}
             >
+              <div id="#editor-container"></div>
               {radio.name}
             </ToggleButton>
           ))} 

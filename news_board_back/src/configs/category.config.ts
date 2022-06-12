@@ -23,3 +23,19 @@ export const CategoryURL = {
   ["science"]: 'https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=105',
   ["sports"]: 'https://sports.news.naver.com/index',
 };
+
+export const ArticleCategory = {
+  ["http://www.biotimes.co.kr/"]: "BIO",
+  ["http://www.blockchaintoday.co.kr/"] : "BLOCKCHAIN",
+  ["https://nano-magazine.com"] : "NANO",
+  ["http://www.aitimes.kr"] : "AI",
+  ["https://metaverseinsider.tech/2022/02/24/the-worlds-first-metaverse-magazine-could-be-another-piece-of-the-metaverse-arms-race/"] : "METAVERSE"
+}
+
+export const CategoryURL2 = {
+  ["BIO"]: "http://www.biotimes.co.kr/",
+  ["BLOCKCHAIN"]: "http://www.blockchaintoday.co.kr/",
+  ["NANO"]: 'https://nano-magazine.com',
+  ["AI"]: "http://www.aitimes.kr",
+  ["METAVERSE"]: 'https://metaverseinsider.tech/2022/02/24/the-worlds-first-metaverse-magazine-could-be-another-piece-of-the-metaverse-arms-race/'
+}

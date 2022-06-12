@@ -1,8 +1,8 @@
 import { UpdateDataToSheets } from "./sheets/Data_CRUD"
 import { menu } from "./crawler/crawlMenu"
 
-let index : number = 4
-let num : number = 250
+let index : number = 0
+let num : number = 2
 
 // 주기적으로 뉴스를 크롤링해서 구글 시트에 업데이트한다.
 async function main() {
@@ -17,4 +17,4 @@ async function main() {
     console.log(num, "Line 17 in main")
 }
 
-setInterval(() => main(), 10000) // 1시간 60000*60
+setInterval(() => main(), 60000*60*2) // 2시간 

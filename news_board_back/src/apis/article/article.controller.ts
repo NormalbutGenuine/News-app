@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ArticleService } from './article.service';
-import { categoryParams, CategoryURL } from 'src/configs/category.config';
+import { categoryParams, CategoryURL, CategoryURL2 } from 'src/configs/category.config';
 import { newsData } from './dto/NewsData.dto';
 
 @Controller('article')
@@ -12,7 +12,7 @@ export class ArticleController {
     getArticle(
         @Param('category') category: categoryParams
     ) : Promise<newsData[]> {
-        if (String(category) === "sports") return this.articleService.getCrawledSportsNews()
-        return this.articleService.getCrawledNews(CategoryURL[category])
+        console.log(category)
+        return this.articleService.getCrawledNews(CategoryURL2[category])
     }
 }

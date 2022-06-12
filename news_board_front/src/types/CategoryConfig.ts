@@ -1,23 +1,23 @@
 export const URLToCategory = (category : string) => {
     switch (category) {
         case "/2":
-            category = "economy"
+            category = "NANO"
             return category
         
         case "/3":
-            category = "society"
+            category = "BLOCKCHAIN"
             return category
         
         case "/4":
-            category = "science"
+            category = "AI"
             return category
         
         case "/5":
-            category = "sports"
+            category = "METAVERSE"
             return category
          
         default:
-            category = "politics"
+            category = "BIO"
             return category
     }
 }
